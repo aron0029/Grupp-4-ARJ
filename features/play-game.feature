@@ -14,6 +14,9 @@ Feature: Play Connect 4
     Given that a new Board is created
     Then it should render 42 divs as children of the board element
 
+
+  # Rikard
+
   Scenario: A new board is empty
-    Given that a new Board is created
+    When a new Board is created
     Then all board positions should have a value of 0

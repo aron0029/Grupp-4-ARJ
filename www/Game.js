@@ -2,7 +2,7 @@ module.exports = class Game {
 
   constructor() {
     this.board = {};
-    this.listener = addEventListener();
+    this.addEventListener();
     this.start();
   }
 
@@ -27,7 +27,7 @@ module.exports = class Game {
 
   addEventListener() {
     if ($('[id="playAgainButton"]')) {
-      return $('[id="playAgainButton"]').addEventListener("click", function (e) { this.start(); });
+      $('[id="playAgainButton"]').addEventListener("click", function (e) { this.start(); });
     }
     else {
       throw console.error('Could not add eventlistener! Play again button element was not found');

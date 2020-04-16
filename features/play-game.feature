@@ -15,14 +15,36 @@ Feature: Play Connect 4
     Then it should render 42 divs as children of the board element
 
 
-  # Rikard Klassen Board
+  # Rikard Klassen Game constructor()
+
+  Scenario: Running the game
+    Given that starting the game creates a new instance of Game without error
+    And that Game creates a new instance of Board without error
+    And that Game successfully adds an eventlistener to play again button and sets property listener to that eventlistener
+    Then the GUI message of the game should present the following message: "Röds tur..."
+
+
+  # Rikard Klassen Game tellTurn()
+
+  Scenario: Red player made a move
+    Given that red player has made his move
+    And that this move did not win the game
+    And that there still are empty positions on the game Board
+    Then the game should present the following message: "Guls tur..."
+
+  Scenario: Yellow player made a move
+    Given that yellow player has made his move
+    And that this move did not win the game
+    And that there still are empty positions on the game Board
+    Then the game should present the following message: "Guls tur..."
+
+
+  # Rikard Klassen Board contructor()
 
   Scenario: Beginning a new Game with empty Board
     When a new Board is created
     Then the Board should be empty
     And all Board positions should have a value of 0
-
-  # Rikard Klassen Board contructor()
 
   Scenario: Creating a new instance of Game
     Given that a new Board of type Board is passed to Game

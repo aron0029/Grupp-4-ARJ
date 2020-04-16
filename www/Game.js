@@ -12,7 +12,7 @@ module.exports = class Game {
 
   tellTurn(player) {
     if (player !== 1 || player !== 2) throw console.error('player must be 1 or 2');
-    if (player === 1) { $('.message').innerHTML = 'Röds tur...'; } else { $$('.message').innerHTML = 'Guls tur...'; }
+    if (player === 1) { $('.message').innerHTML = 'Röds tur...'; } else { $('.message').innerHTML = 'Guls tur...'; }
   }
 
   over(won) {

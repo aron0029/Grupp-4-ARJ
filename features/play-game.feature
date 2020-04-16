@@ -20,7 +20,7 @@ Feature: Play Connect 4
   Scenario: Running the game
     Given that starting the game creates a new instance of Game without error
     And that Game creates a new instance of Board without error
-    And that Game successfully adds an eventlistener to play again button and sets property listener to that eventlistener
+    And that Game successfully adds an eventlistener for play again button element
     Then the GUI message of the game should present the following message: "Röds tur..."
 
 

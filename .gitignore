@@ -1,0 +1,4 @@
+node_modules
+reports/*.json
+reports/*.html
+reports/*.xml

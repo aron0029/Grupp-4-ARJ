@@ -1,0 +1,72 @@
+body {
+  margin:3vh;
+  text-align: center;
+  color: white;
+  font-family: Verdana, sans-serif;
+  background-color: black;
+}
+
+.board {
+  display:inline-block;
+}
+
+.board > div {
+  cursor: pointer;
+  background-color: blue;
+  float:left;
+}
+
+.board > div:nth-child(7n + 1){
+  clear: both;
+}
+
+.board > div > div {
+  width: 10vh;
+  height: 10vh;
+  border: 1vh solid blue;
+  border-radius: 50%;
+  background-color: white;
+  margin: .5vh;
+}
+
+.message {
+  font-size: 5vh;
+}
+
+.message button {
+  margin: 1vh auto 0;
+  display: block;
+  font-size: 4vh;
+  cursor:pointer;
+}
+
+@media (orientation: portrait) {
+  body {
+    margin: 3vw;
+  }
+  .board > div > div {
+    width: 10vw;
+    height: 10vw;
+    border-width: 1vw;
+    margin:.5vw;
+  }
+  .message {
+    font-size: 5vw;
+  }
+  .message button {
+    margin: 1vw auto 0;
+    font-size: 4vw;
+  }
+}
+
+.board > .red > div {
+  background-color: red;
+}
+
+.board > .yellow > div {
+  background-color: yellow;
+}
+
+.board > .win > div {
+  border-color: #000;
+}

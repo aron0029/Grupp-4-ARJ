@@ -50,7 +50,7 @@ Feature: Play Connect 4
     Given that a new Board of type Board is passed to Game
     When a new Game is created
     Then the value of Game input argument game should be set to that Board
-    And the value of Game property matrix be set to an array consisting of 6 elements
+    And the value of Game property matrix be set to an array consisting of 6 x 7 elements each with a value set to 0
     And Game tellTurn() be called using currentPlayer property with value 1 as input argument
     And the value of Game property playInProgress set to false
 

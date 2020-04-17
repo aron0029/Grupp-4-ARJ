@@ -27,7 +27,7 @@ module.exports = class Game {
 
   addEventListener() {
     if ($('[id="playAgainButton"]')) {
-      $('[id="playAgainButton"]').addEventListener("click", function (e) { this.start(); });
+      $('[id="playAgainButton"]').addEventListener("click", () => this.start());
     }
     else {
       throw console.error('Could not add eventlistener! Play again button element was not found');

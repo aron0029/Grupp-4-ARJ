@@ -1,4 +1,4 @@
-module.exports = class Board {
+class Board {
 
   constructor(game) { }
 

@@ -1,3 +1,7 @@
+Feature: Create a new Board
+  We want to starta new game with epmty Board
+
+
   # Rikard Klassen Board contructor()
 
   Scenario: Beginning a new Game with empty Board

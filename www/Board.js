@@ -34,6 +34,7 @@ class Board {
 
     // Change currentPlayer
     this.currentPlayer = (this.currentPlayer === 1 ? this.currentPlayer = 2 : this.currentPlayer = 1);
+    this.game.tellTurn(this.currentPlayer);
   }
 
   winCheck() { }
@@ -47,7 +48,7 @@ class Board {
         let selectedCol = (clickedDiv % 7);
         let selectedRow = Math.floor(clickedDiv / 7);
 
-        // Testing just to set clicked to .red
+        // Some testing... just setting clicked to .red
         console.log('You clicked position corresponding to this.matrix[' + selectedRow + '][' + selectedCol + ']');
         this.matrix[selectedRow][selectedCol] = this.currentPlayer;
         this.makeMove(selectedCol);
@@ -62,6 +63,8 @@ class Board {
   removeEventListener() { }
 
   render() {
+    let totalCount = 0;
+
     // If board not created
     if ($('.board').innerHTML === '') {
       let totalCount = 0;
@@ -77,7 +80,6 @@ class Board {
       }
     }
     else {
-      let totalCount = 0;
       for (let i = 0; i < this.matrix.length; i++) {
         for (let n = 0; n < this.matrix[0].length; n++) {
           // Set corresponding div color to match this.matrix array value

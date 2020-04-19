@@ -14,10 +14,12 @@ class Board {
   async makeMove(column) {
     if (this.playInProgress) return null;
     if (!Number.isInteger(column) || (column > 6 && column < 0)) throw console.error('column must be an integer between 0 and 6');
-    console.log('Made a move at column: ' + column);
+    this.playInProgress = true;
+
+    //console.log('Made a move at column: ' + column);
     for (let row in this.matrix[column]) {
       if (row !== 0) {
-        // Work through array column?...
+        // Work through array column like this?...
         // 1 check next row, if not 1 || 2 then set current row to player and set previous row to 0... else stop and winCheck()
         // 2 render
         // 3 sleep 50ms
@@ -25,7 +27,7 @@ class Board {
       }
     }
 
-    /* Alot of steps here
+    /* Some missing steps here
     .
     .
     .
@@ -35,6 +37,8 @@ class Board {
     // Change currentPlayer
     this.currentPlayer = (this.currentPlayer === 1 ? this.currentPlayer = 2 : this.currentPlayer = 1);
     this.game.tellTurn(this.currentPlayer);
+    this.playInProgress = false;
+    return true;
   }
 
   winCheck() { }
@@ -48,7 +52,7 @@ class Board {
         let selectedCol = (clickedDiv % 7);
         let selectedRow = Math.floor(clickedDiv / 7);
 
-        // Some testing... just setting clicked to .red
+        // Some direct testing without makeMove()... just setting clicked to .red
         console.log('You clicked position corresponding to this.matrix[' + selectedRow + '][' + selectedCol + ']');
         this.matrix[selectedRow][selectedCol] = this.currentPlayer;
         this.makeMove(selectedCol);

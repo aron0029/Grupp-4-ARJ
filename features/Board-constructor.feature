@@ -6,7 +6,8 @@ Feature: Create a new Board
 
   Scenario: Beginning a new Game with empty Board
     When a new Board is created
-    Then the Board should be empty
+    Then game should be an instance of Game
+    And the Board should be empty
     And all Board positions should have a value of 0
 
   Scenario: Creating a new instance of Game

@@ -4,15 +4,16 @@ require('./_include-all')();
 
 module.exports = function () {
 
-  // Test Board-constructur
   let board;
   let game;
 
   this.When(/^a new Board is created$/, function () {
-
-    // Test if game is an instance of Game
     game = new Game();
     board = new Board(game);
+
+  });
+
+  this.Then(/^game should be an instance of Game$/, function () {
     expect(board.game).to.be.an.instanceof(Game,
       'game must be an instance of Game'
     );

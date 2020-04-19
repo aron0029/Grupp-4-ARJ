@@ -71,7 +71,6 @@ class Board {
 
     // If board not created
     if ($('.board').innerHTML === '') {
-      let totalCount = 0;
       for (let row of this.matrix) {
         for (let column of row) {
           let firstDiv = document.createElement('div');

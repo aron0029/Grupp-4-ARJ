@@ -19,12 +19,29 @@ module.exports = function () {
     );
   });
 
-  this.Then(/^the Board should be empty$/, function () {
-
+  this.Then(/^all Board positions should have a value of (\d+)$/, function (value) {
+    expect(board.matrix).to.deep.equal([
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0]
+    ],
+      'game board value not set correctly'
+    );
   });
 
-  this.Then(/^all Board positions should have a value of (\d+)$/, function (arg1) {
+  this.Then(/^currentPlayer set to (\d+)$/, function (value) {
+    expect(board.currentPlayer).to.deep.equal(1,
+      'currentPlayer not set to player 1'
+    );
+  });
 
+  this.Then(/^playInProgress set to false$/, function () {
+    expect(board.playInProgress).to.deep.equal(false,
+      'playInProgress not set to false'
+    );
   });
 
   this.Given(/^that a new Board of type Board is passed to Game$/, function () {

@@ -1,14 +1,12 @@
 Feature: Create a new Board
   We want to start a new game with empty Board
 
-
-  # Rikard Klassen Board contructor()
-
   Scenario: Beginning a new Game with empty Board
     When a new Board is created
     Then game should be an instance of Game
-    And the Board should be empty
     And all Board positions should have a value of 0
+    And currentPlayer set to 1
+    And playInProgress set to false
 
   Scenario: Creating a new instance of Game
     Given that a new Board of type Board is passed to Game

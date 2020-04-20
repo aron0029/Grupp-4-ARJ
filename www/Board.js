@@ -3,60 +3,72 @@ class Board {
   constructor(game) {
     if (!game instanceof Game) throw console.error('game must be an instance of Game');
     this.game = game;
-    this.matrix = [...Array(6)].map(x => Array(7).fill(0));
+
+    // Creating 7x6 2D array. All values set to 0
+    this.matrix = [...Array(7)].map(x => Array(6).fill(0));
+
+    // Set initial
     this.currentPlayer = 1;
     this.playInProgress = false;
+
+    // Running
     this.addEventListener();
     this.render();
     this.game.tellTurn(this.currentPlayer);
   }
 
+
   async makeMove(column) {
     if (this.playInProgress) return null;
     if (!Number.isInteger(column) || (column > 6 && column < 0)) throw console.error('column must be an integer between 0 and 6');
+
+    // Prevent a move when makeMove() is running
     this.playInProgress = true;
 
-    //console.log('Made a move at column: ' + column);
-    for (let row in this.matrix[column]) {
-      if (row !== 0) {
-        // Work through array column like this?...
-        // 1 check next row, if not 1 || 2 then set current row to player and set previous row to 0... else stop and winCheck()
-        // 2 render
-        // 3 sleep 50ms
-        // 4 repeat from step 1
+    for (let i = 0; i < this.matrix[column].length; i++) {
+      if (this.matrix[column][i] === 0) {
+        this.matrix[column][i] = this.currentPlayer;
+        // Redraw for animation
+        this.render();
+        // Pause
+        await sleep(50);
+        // Next position was occupied so break at this position
+        if (this.matrix[column][i + 1] !== 0) break;
+        // We are currently in a drop animation so set this position to 0 before moving on to next position
+        this.matrix[column][i] = 0;
+      }
+      else {
+        // No drop possible, the column is full so do nothing
+        this.playInProgress = false;
+        return false;
       }
     }
 
-    /* Some missing steps here
-    .
-    .
-    .
-    .
-    */
+    // Check if won. Does nothing right now
+    this.winCheck();
 
     // Change currentPlayer
     this.currentPlayer = (this.currentPlayer === 1 ? this.currentPlayer = 2 : this.currentPlayer = 1);
     this.game.tellTurn(this.currentPlayer);
+
     this.playInProgress = false;
+
     return true;
   }
 
+
   winCheck() { }
 
+
   markWin(combo) { }
+
 
   addEventListener() {
     if ($('.board')) {
       $('.board').addEventListener("click", (event) => {
-        let clickedDiv = event.target.closest('div[name]').getAttribute('name');
-        let selectedCol = (clickedDiv % 7);
-        let selectedRow = Math.floor(clickedDiv / 7);
-
-        // Some direct testing without makeMove()... just setting clicked to .red
-        console.log('You clicked position corresponding to this.matrix[' + selectedRow + '][' + selectedCol + ']');
-        this.matrix[selectedRow][selectedCol] = this.currentPlayer;
+        let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
+        let selectedCol = clickedDiv % this.matrix.length;
         this.makeMove(selectedCol);
-        this.render();
       });
     }
     else {
@@ -64,51 +76,42 @@ class Board {
     }
   }
 
+
   removeEventListener() { }
 
-  render() {
-    let totalCount = 0;
 
-    // If board not created
+  render() {
+    // If board divs not exist, create them
     if ($('.board').innerHTML === '') {
-      for (let row of this.matrix) {
-        for (let column of row) {
-          let firstDiv = document.createElement('div');
-          let secondDiv = document.createElement('div');
-          // Lets set a name attribute
-          firstDiv.setAttribute('name', totalCount);
-          $('.board').appendChild(firstDiv).appendChild(secondDiv);
-          totalCount++;
-        }
+      for (let i = 0; i < this.matrix.flat(1).length; i++) {
+        let firstDiv = document.createElement('div');
+        let secondDiv = document.createElement('div');
+        $('.board').appendChild(firstDiv).appendChild(secondDiv);
       }
     }
+    // Else when board elements already exist in the DOM
     else {
-      for (let i = 0; i < this.matrix.length; i++) {
-        for (let n = 0; n < this.matrix[0].length; n++) {
-          // Set corresponding div color to match this.matrix array value
-          let currentDiv = $('[name="' + totalCount + '"');
-          switch (this.matrix[i][n]) {
-            case 0:
-              currentDiv.classList.remove('red');
-              currentDiv.classList.remove('yellow');
-              break;
-            case 1:
-              currentDiv.classList.add('red');
-              break;
-            case 2:
-              currentDiv.classList.add('yellow');
+      // Fetching board divs
+      let boardDivs = [...$$('.board > div')];
+      // I have no idea how to "flatten" array in correct dimension so using nested for-loops until better solution...
+      let currentDiv = 0;
+      for (let i = 0; i < this.matrix[0].length; i++) {       // Board rows
+        for (let n = 0; n < this.matrix.length; n++) {        // Board columns
+          switch (this.matrix[n][i]) {
+            case 1: boardDivs[currentDiv].classList.add('red'); break;
+            case 2: boardDivs[currentDiv].classList.add('yellow'); break;
+            default:
+              boardDivs[currentDiv].classList.remove('red');
+              boardDivs[currentDiv].classList.remove('yellow');
               break;
           }
-          totalCount++;
+          currentDiv++;
         }
       }
-
     }
-
   }
 
-
-}
+} // End of class
 
 // make it possible to test on backend
 if (typeof global !== 'undefined') { global.Board = Board };

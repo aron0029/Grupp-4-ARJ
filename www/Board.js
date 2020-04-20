@@ -32,7 +32,7 @@ class Board {
         this.render();
         // Pause
         await sleep(50);
-        // Next position was occupied so break at this position
+        // If next position is occupied break at this position
         if (this.matrix[column][i + 1] !== 0) break;
         // We are currently in a drop animation so set this position to 0 before moving on to next position
         this.matrix[column][i] = 0;

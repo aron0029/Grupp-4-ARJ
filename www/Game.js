@@ -1,14 +1,8 @@
 class Game {
 
-  constructor() {
-    this.board = {};
-    this.addEventListener();
-    this.start();
-  }
+  constructor() { }
 
-  start() {
-    this.board = new Board(this);
-  }
+  start() { }
 
   tellTurn(player) {
     if (player !== 1 && player !== 2) throw console.error('player must be 1 or 2');
@@ -37,7 +31,6 @@ class Game {
       throw console.error('Could not add .message eventlistener!');
     }
   }
-
 }
 
 // make it possible to test on backend

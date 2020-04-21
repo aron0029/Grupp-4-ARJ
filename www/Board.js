@@ -4,7 +4,7 @@ class Board {
     if (!game instanceof Game) throw console.error('game must be an instance of Game');
     this.game = game;
 
-    // Creating 7x6 2D array. All values set to 0
+    // Creating 6x7 2D array. All values set to 0
     this.matrix = [...Array(6)].map(x => Array(7).fill(0));
 
     // Set initial

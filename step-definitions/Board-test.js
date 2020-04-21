@@ -9,7 +9,8 @@ module.exports = function () {
 
   this.When(/^a new Board is created$/, function () {
     game = new Game();
-    board = new Board(game);
+    board = game.board;
+    //board = new Board(game);
 
   });
 

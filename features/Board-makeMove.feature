@@ -8,7 +8,7 @@ Feature: Making a move in the game
 
   Scenario: A player makes a valid move
     Given board.playInProgress property is false
-    Then makeMove should move current players game piece through free positions in selected column until no free position is available
+    Then makeMove should move current players game piece through free positions in selected column calling render each time until no free position is available
     And board.matrix property array values should be set corresponding to previous board.matrix values including this latest player move
     And winCheck called to check for a 4-in-a-row win
     And board.currentPlayer be set to integer 1 or 2 whichever is the next player in turn

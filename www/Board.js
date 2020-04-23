@@ -1,7 +1,7 @@
 class Board {
 
   constructor(game) {
-    if (!game instanceof Game) throw console.error('game must be an instance of Game');
+    if (!(game instanceof Game)) throw (new Error('game must be an instance of Game'));
     this.game = game;
 
     // Creating 6x7 2D array. All values set to 0
@@ -20,7 +20,7 @@ class Board {
 
   async makeMove(column) {
     if (this.playInProgress) return null;
-    if (!Number.isInteger(column) || (column > 6 && column < 0)) throw console.error('column must be an integer between 0 and 6');
+    if (!Number.isInteger(column) || (column > 6 && column < 0)) throw (new Error('column must be an integer between 0 and 6'));
 
     // Prevent a move when makeMove() is running
     this.playInProgress = true;
@@ -85,7 +85,7 @@ class Board {
       $('.board').addEventListener("click", this.listener);
     }
     else {
-      throw console.error('Could not add .board eventlistener!');
+      throw (new Error('Could not add .board eventlistener!'));
     }
   }
 

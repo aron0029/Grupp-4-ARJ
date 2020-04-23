@@ -56,7 +56,7 @@ module.exports = function () {
     expect(() => new Board({})).to.throw(
       Error,
       'game must be an instance of Game',
-      'Game constructor is not throwing correct error'
+      'Board constructor is not throwing correct error'
     );
   });
 

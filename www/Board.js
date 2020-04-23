@@ -72,7 +72,7 @@ class Board {
 
   addEventListener() {
     if ($('.board')) {
-      $('.board').addEventListener("click", (event) => {
+      this.listener = (event) => {
         let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
         let selectedCol = clickedDiv % this.matrix[0].length;
         // Unused. Keep for unit-testing purposes. This will give the row of a clicked div
@@ -81,7 +81,8 @@ class Board {
         //this.matrix[selectedRow][selectedCol] = this.currentPlayer;
         //this.render();
         this.makeMove(selectedCol);
-      });
+      };
+      $('.board').addEventListener("click", this.listener);
     }
     else {
       throw console.error('Could not add .board eventlistener!');

@@ -1,6 +1,6 @@
 class Board {
 
-  constructor(game) {
+  constructor (game) {
     if (!game instanceof Game) throw console.error('game must be an instance of Game');
     this.game = game;
 
@@ -64,7 +64,42 @@ class Board {
   }
 
 
-  winCheck() { }
+  winCheck() {  // Change currentPlayer
+    this.currentPlayer = (this.currentPlayer === 1 ? this.currentPlayer = 2 : this.currentPlayer = 1);
+    this.game.tellTurn(this.currentPlayer);
+
+    this.playInProgress = false;
+
+    return true;
+  }
+
+
+  winCheck() {
+    let winOffset = [
+      [[o, o], [0, 1], [0, 2], [0, 3]],
+      [[o, o], [1, 0], [2, 0], [3, 0]],
+      [[o, o], [1, 1], [2, 2], [3, 3]],
+      [[o, o], [1, 1], [2, -2], [3, -3]],
+    ];
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 7; col++) {
+        for (let w of winOffset) {
+          let slots = w.map(([r, c]) => this.matrix[row + r] && this.matrix
+          [row + r][col + c]).join('');
+          if (slots === '1111' || '2222') {
+            return +slots[0];
+
+
+
+          }
+        }
+
+      }
+
+
+    }
+  }
+
 
 
   markWin(combo) { }

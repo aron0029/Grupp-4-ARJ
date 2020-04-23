@@ -18,7 +18,7 @@ module.exports = function () {
 
     tellTurn(player) {
       tellTurnIsCalled = true;
-      if (player === 1) {
+      if (player === 1 || player === 2) {
         tellTurnPlayer = true;
       }
     }

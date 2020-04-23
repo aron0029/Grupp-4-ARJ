@@ -49,6 +49,15 @@ module.exports = function () {
     expect(board.game).to.be.an.instanceof(Game,
       'game must be an instance of Game'
     );
+
+  });
+
+  this.Then(/^if game is not an instance of Game, it should throw error 'game must be an instance of Game'$/, function () {
+    expect(() => new Board({})).to.throw(
+      Error,
+      'game must be an instance of Game',
+      'Game constructor is not throwing correct error'
+    );
   });
 
   this.Then(/^all Board positions should have a value of (\d+)$/, function (value) {

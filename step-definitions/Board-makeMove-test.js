@@ -24,7 +24,7 @@ module.exports = function () {
   let fakeGame = new FakeGame();
   let initialMatrix = JSON.parse(JSON.stringify(fakeGame.board.matrix));  // Deep copy/clone
 
-  this.Given(/^board addEventListener was called$/, function () {
+  this.Given(/^board addEventListener method was called$/, function () {
     expect(listenerCalled).to.be.true;
   });
 
@@ -32,7 +32,7 @@ module.exports = function () {
     expect(fakeGame.board.playInProgress).to.be.false;
   });
 
-  this.Then(/^board makeMove should call render (\d+) times for any selected column on empty game board$/, async function (value) {
+  this.Then(/^board makeMove method should call render (\d+) times for any selected column on empty game board$/, async function (value) {
     // Board constructor calls render 1 time, board makeMove should call render 6 times during a move anywhere on empty game board 
     await fakeGame.board.makeMove(0);
     expect(timesRendered).to.equal(+value + 1);
@@ -45,7 +45,7 @@ module.exports = function () {
     expect(initialMatrix.join()).to.equal(fakeGame.board.matrix.join());
   });
 
-  this.Then(/^board winCheck be called to check for a 4-in-a-row win$/, function () {
+  this.Then(/^board winCheck method be called to check for a 4-in-a-row win$/, function () {
     expect(winCheckCalled).to.be.true;
   });
 
@@ -54,20 +54,20 @@ module.exports = function () {
     expect(fakeGame.board.currentPlayer).to.be.a('number').and.equal(2);
   });
 
-  this.Then(/^function game tellTurn be called with board currentPlayer as argument$/, function () {
+  this.Then(/^game tellTurn method be called with board currentPlayer as argument$/, function () {
     expect(tellTurnPlayer).to.equal(fakeGame.board.currentPlayer);
   });
 
-  this.Then(/^board makeMove should return true$/, async function () {
+  this.Then(/^board makeMove method should return true$/, async function () {
     expect(await fakeGame.board.makeMove(0)).to.be.true;
   });
 
   this.When(/^there are no free positions available in selected column for more game pieces$/, async function () {
-    // Lets actually call makeMove 6 times before testing invalid move instead of setting fakeGame.board.matrix[0][6] to 1;
+    // Lets actually call makeMove 6 times before testing invalid move instead of setting fakeGame.board.matrix[0][6] value to 1;
     for (i = 0; i < fakeGame.board.matrix.length; i++) await fakeGame.board.makeMove(6);
   });
 
-  this.Then(/^board makeMove should return false$/, async function () {
+  this.Then(/^board makeMove method should return false$/, async function () {
     expect(await fakeGame.board.makeMove(6)).to.be.false;
   });
 

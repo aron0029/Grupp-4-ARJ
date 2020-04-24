@@ -1,7 +1,7 @@
 class Board {
 
   constructor (game) {
-    if (!game instanceof Game) throw console.error('game must be an instance of Game');
+    if (!game instanceof Game) throw (new error('game must be an instance of Game'));
     this.game = game;
 
     // Creating 6x7 2D array. All values set to 0
@@ -15,6 +15,7 @@ class Board {
     this.addEventListener();
     this.render();
     this.game.tellTurn(this.currentPlayer);
+    this.winCheck();
   }
 
 
@@ -64,22 +65,18 @@ class Board {
   }
 
 
-  winCheck() {  // Change currentPlayer
-    this.currentPlayer = (this.currentPlayer === 1 ? this.currentPlayer = 2 : this.currentPlayer = 1);
-    this.game.tellTurn(this.currentPlayer);
+  // Change currentPlayer
 
-    this.playInProgress = false;
 
-    return true;
-  }
 
 
   winCheck() {
+
     let winOffset = [
-      [[o, o], [0, 1], [0, 2], [0, 3]],
-      [[o, o], [1, 0], [2, 0], [3, 0]],
-      [[o, o], [1, 1], [2, 2], [3, 3]],
-      [[o, o], [1, 1], [2, -2], [3, -3]],
+      [[0, 0], [0, 1], [0, 2], [0, 3]],
+      [[0, 0], [1, 0], [2, 0], [3, 0]],
+      [[0, 0], [1, 1], [2, 2], [3, 3]],
+      [[0, 0], [1, 1], [2, -2], [3, -3]]
     ];
     for (let row = 0; row < 6; row++) {
       for (let col = 0; col < 7; col++) {
@@ -89,20 +86,27 @@ class Board {
           if (slots === '1111' || '2222') {
             return +slots[0];
 
+          }
+          else {
 
-
+            return false;
           }
         }
 
+
       }
-
-
     }
+
+
+
+
   }
 
 
+  markWin(combo) {
 
-  markWin(combo) { }
+    //anropas med combo - egenskapen från winCheck som inargument.
+  }
 
 
   addEventListener() {
@@ -119,12 +123,19 @@ class Board {
       });
     }
     else {
-      throw console.error('Could not add .board eventlistener!');
+      throw new (error('Could not add .board eventlistener!'));
     }
   }
 
 
-  removeEventListener() { }
+  removeEventListener() {
+    // whe  winCheck === true
+
+    /* Metoden ska ta bort händelselyssnaren lagrad i egenskapen listener från elementet med css - klassen board i DOM: en.
+
+   Metoden ska använda hjälpmetoden $ för att ta tag i rätt element i DOM: en.*/
+
+  }
 
 
   render() {

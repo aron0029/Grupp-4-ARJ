@@ -93,7 +93,7 @@ class Board {
   removeEventListener() { }
 
 
-  async render() {
+  render() {
     // If board divs not exist, create them
     if ($('.board').innerHTML === '') {
       for (let i = 0; i < this.matrix.flat(1).length; i++) {

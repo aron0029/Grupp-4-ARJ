@@ -47,15 +47,15 @@ module.exports = function () {
 
   this.Then(/^game should be an instance of Game$/, function () {
     expect(board.game).to.be.an.instanceof(Game,
-      'game must be an instance of Game'
+      'Board constructor should only accept game if only instance of Game'
     );
 
   });
 
-  this.Then(/^if game is not an instance of Game, it should throw error 'game must be an instance of Game'$/, function () {
+  this.Then(/^if game is not an instance of Game, it should throw error "([^"]*)"$/, function (expectedError) {
     expect(() => new Board({})).to.throw(
       Error,
-      'game must be an instance of Game',
+      expectedError,
       'Board constructor is not throwing correct error'
     );
   });

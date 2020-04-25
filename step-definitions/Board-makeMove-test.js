@@ -4,9 +4,14 @@ require('./_include-all')();
 
 module.exports = function () {
 
+  let listenerCalled = false;
+  let winCheckCalled = false;
+  let timesRendered;
+  let tellTurnPlayer = [];
+
   class FakeGame extends Game {
     start() { this.board = new FakeBoard(this); }
-    tellTurn(player) { tellTurnPlayer = player; }
+    tellTurn(player) { tellTurnPlayer.push(player); }
   }
 
   class FakeBoard extends Board {
@@ -14,11 +19,6 @@ module.exports = function () {
     winCheck() { winCheckCalled = true; }
     render() { timesRendered++; }
   }
-
-  let listenerCalled = false;
-  let winCheckCalled = false;
-  let timesRendered = 0;
-  let tellTurnPlayer = 0;
 
   //let realGame = new Game();
   let fakeGame = new FakeGame();
@@ -32,16 +32,25 @@ module.exports = function () {
     expect(fakeGame.board.playInProgress).to.be.false;
   });
 
-  this.Then(/^board makeMove method should call render (\d+) times for any selected column on empty game board$/, async function (value) {
-    // Board constructor calls render 1 time, board makeMove should call render 6 times during a move anywhere on empty game board 
-    await fakeGame.board.makeMove(0);
-    expect(timesRendered).to.equal(+value + 1);
+  this.Then(/^board playInProgress property should be set to true$/, async function () {
+    fakeGame.board.makeMove(0);
+    while (!fakeGame.board.playInProgress) await sleep(1); // 1ms sleep avoid overrun
+    expect(fakeGame.board.playInProgress).to.be.true;
   });
 
-  this.Then(/^board matrix property array values should end up corresponding to previous board matrix values including last player move$/, function () {
-    // Previous step-definition already made a move on first column [index 0]
+  this.Then(/^board makeMove method should call render (\d+) times for any empty column on game board$/, async function (value) {
+    // Await board makeMove from previous step-definition. 1ms sleep to avoid overrun
+    while (fakeGame.board.playInProgress) await sleep(1);
+    timesRendered = 0;
+    await fakeGame.board.makeMove(1);
+    expect(timesRendered).to.equal(+value);
+  });
+
+  this.Then(/^board matrix property array values should end up corresponding to previous board matrix values including any player moves$/, function () {
+    // Previous step-definition made 2 player moves on empty board at column [0] and [1]
     // Lets compare current matrix array against manually altered initial matrix array
     initialMatrix[5][0] = 1;
+    initialMatrix[5][1] = 2;
     expect(initialMatrix.join()).to.equal(fakeGame.board.matrix.join());
   });
 
@@ -49,26 +58,41 @@ module.exports = function () {
     expect(winCheckCalled).to.be.true;
   });
 
-  this.Then(/^board currentPlayer be set to number 1 or 2 whichever is the next player in turn$/, function () {
-    // Player 1 has already made a move in previous step-definition
-    expect(fakeGame.board.currentPlayer).to.be.a('number').and.equal(2);
+  this.Then(/^board currentPlayer property be set to number 1 or 2 whichever is the next player in turn$/, function () {
+    // Next player should be the player "prior to previous" player
+    expect(fakeGame.board.currentPlayer).to.be.a('number').and.equal(tellTurnPlayer[tellTurnPlayer.length - 3]);
   });
 
   this.Then(/^game tellTurn method be called with board currentPlayer as argument$/, function () {
-    expect(tellTurnPlayer).to.equal(fakeGame.board.currentPlayer);
+    expect(tellTurnPlayer[tellTurnPlayer.length - 1]).to.equal(fakeGame.board.currentPlayer);
   });
 
   this.Then(/^board makeMove method should return true$/, async function () {
     expect(await fakeGame.board.makeMove(0)).to.be.true;
   });
 
-  this.When(/^there are no free positions available in selected column for more game pieces$/, async function () {
-    // Lets actually call makeMove 6 times before testing invalid move instead of setting fakeGame.board.matrix[0][6] value to 1;
-    for (i = 0; i < fakeGame.board.matrix.length; i++) await fakeGame.board.makeMove(6);
+  this.Then(/^board playInProgress property end up being set to false when board makeMove has finished move$/, function () {
+    // This step-definition should preseed previous step 
+    // But since we already know makeMove sets playInProgress true upon method call we need only check that its false when finished
+    expect(fakeGame.board.playInProgress).to.be.false;
+  });
+
+  this.When(/^there are no free positions available in a column for more game pieces$/, async function () {
+    // Lets actually call makeMove 6 times before testing invalid move instead of setting fakeGame.board.matrix[0][3] value to 1;
+    for (i = 0; i <= fakeGame.board.matrix.length; i++) {
+      fakeGame.board.makeMove(3);
+      while (fakeGame.board.playInProgress) await sleep(1);
+    }
   });
 
   this.Then(/^board makeMove method should return false$/, async function () {
-    expect(await fakeGame.board.makeMove(6)).to.be.false;
+    expect(await fakeGame.board.makeMove(3)).to.be.false;
+  });
+
+  this.Then(/^board playInProgress property end up being set to false when board makeMove has skipped move$/, function () {
+    // This step-definition should preseed previous step 
+    // But since we already know makeMove sets playInProgress true upon method call we need only check that its false when finished
+    expect(fakeGame.board.playInProgress).to.be.false;
   });
 
 }

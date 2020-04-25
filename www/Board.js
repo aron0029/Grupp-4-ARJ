@@ -116,7 +116,6 @@ class Board {
             default:
               boardDivs[currentDiv].classList.remove('red');
               boardDivs[currentDiv].classList.remove('yellow');
-              break;
           }
           currentDiv++;
         }

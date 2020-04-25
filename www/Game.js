@@ -11,12 +11,12 @@ class Game {
   }
 
   tellTurn(player) {
-    if (player !== 1 && player !== 2) throw console.error('player must be 1 or 2');
+    if (player !== 1 && player !== 2) throw (new Error('player must be 1 or 2'));
     if (player === 1) { $('.message').innerHTML = 'Röds tur...'; } else { $('.message').innerHTML = 'Guls tur...'; }
   }
 
   over(won) {
-    if (won !== 1 && won !== 2 && won !== 'draw') throw console.error('won must be “draw”, 1 or 2');
+    if (won !== 1 && won !== 2 && won !== 'draw') throw (new Error('won must be “draw”, 1 or 2'));
     let message = 'Det blev oavgjort!';
     switch (won) {
       case 1: message = 'Röd vann!'; break;
@@ -34,7 +34,7 @@ class Game {
       });
     }
     else {
-      throw console.error('Could not add .message eventlistener!');
+      throw (new Error('Could not add .message eventlistener!'));
     }
   }
 }

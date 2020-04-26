@@ -173,6 +173,7 @@ class Board {
     // Else when board child divs already exist
     else {
       let boardDivs = [...$$('.board > div')];
+      boardDivs.map(x => x.classList.remove('win'));
       let currentDiv = 0;
       for (let i = 0; i < this.matrix.length; i++) {        // A board row [6]
         for (let n = 0; n < this.matrix[0].length; n++) {   // Board columns [7]

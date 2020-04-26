@@ -1,7 +1,7 @@
 class Board {
 
   constructor(game) {
-    if (!game instanceof Game) throw console.error('game must be an instance of Game');
+    if (!(game instanceof Game)) throw (new Error('game must be an instance of Game'));
     this.game = game;
 
     // Creating 6x7 2D array. All values set to 0
@@ -20,7 +20,7 @@ class Board {
 
   async makeMove(column) {
     if (this.playInProgress) return null;
-    if (!Number.isInteger(column) || (column > 6 && column < 0)) throw console.error('column must be an integer between 0 and 6');
+    if (!Number.isInteger(column) || (column > 6 && column < 0)) throw (new Error('column must be an integer between 0 and 6'));
 
     // Prevent a move when makeMove() is running
     this.playInProgress = true;
@@ -51,8 +51,16 @@ class Board {
       }
     }
 
-    // Check if won. Does nothing right now
-    this.winCheck();
+    // Check if won
+    let winCheck = this.winCheck();
+    if (winCheck) {
+      this.removeEventListener();
+      if (winCheck.combo) {
+        this.markWin(winCheck.combo);
+      }
+      this.game.over(winCheck.winner);
+      return true;
+    }
 
     // Change currentPlayer
     this.currentPlayer = (this.currentPlayer === 1 ? this.currentPlayer = 2 : this.currentPlayer = 1);
@@ -64,10 +72,68 @@ class Board {
   }
 
 
-  winCheck() { }
+  winCheck() {
+    let winOffset = [
+      [[0, 0], [0, 1], [0, 2], [0, 3]], // horizontal offset
+      [[0, 0], [1, 0], [2, 0], [3, 0]], // vertical offset
+      [[0, 0], [1, 1], [2, 2], [3, 3]], // diagonal 1 offset
+      [[0, 0], [1, -1], [2, -2], [3, -3]] // diagonal 2 offset
+    ];
+
+    let obj = {};
+    let winningCombo = [];
+
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 7; col++) {
+        for (let w of winOffset) {
+          let slots = w.map(([r, c]) => this.matrix[row + r] && this.matrix[row + r][col + c]).join('');
+
+          let count = 0;
+          this.matrix.flat().map(x => x !== 0 ? count++ : '');
+
+          if (slots === '1111' || slots === '2222') {
+
+            for (let win of w) {
+              winningCombo.push([row + win[0], col + win[1]]);
+            }
+
+            return obj = {
+              winner: +slots[0],
+              combo: winningCombo
+            }
+
+          }
+          else if (count === 42) {
+            return obj = {
+              winner: 'draw'
+            }
+          }
+
+        }
+      }
+    }
+    return false;
+  }
 
 
-  markWin(combo) { }
+  // Not done yet, need to follow API
+  markWin(combo) {
+    let winningComboMatrix = [...Array(6)].map(x => Array(7).fill(0));
+
+    for (let win of combo) {
+      winningComboMatrix[win[0]][win[1]] = 'win';
+    }
+
+    let boardDivs = [...$$('.board > div')];
+    let currentDiv = 0;
+
+    for (let winning of winningComboMatrix.flat()) {
+      if (winning === 'win') {
+        boardDivs[currentDiv].classList.add('win');
+      }
+      currentDiv++;
+    }
+  }
 
 
   addEventListener() {
@@ -85,28 +151,29 @@ class Board {
       $('.board').addEventListener("click", this.listener);
     }
     else {
-      throw console.error('Could not add .board eventlistener!');
+      throw (new Error('Could not add .board eventlistener!'));
     }
   }
 
 
-  removeEventListener() { }
+  removeEventListener() {
+    $('.board').removeEventListener('click', this.listener);
+  }
 
 
   render() {
-    // If board divs not exist, create them
-    if ($('.board').innerHTML === '') {
+    // If board empty create child divs
+    if (!$('.board').innerHTML) {
       for (let i = 0; i < this.matrix.flat(1).length; i++) {
         let firstDiv = document.createElement('div');
         let secondDiv = document.createElement('div');
         $('.board').appendChild(firstDiv).appendChild(secondDiv);
       }
     }
-    // Else when board elements already exist in the DOM
+    // Else when board child divs already exist
     else {
-      // Fetching board divs
       let boardDivs = [...$$('.board > div')];
-      // I have no idea how to "flatten" array in correct dimension (short solution) so using nested for-loops until better solution...
+      boardDivs.map(x => x.classList.remove('win'));
       let currentDiv = 0;
       for (let i = 0; i < this.matrix.length; i++) {        // A board row [6]
         for (let n = 0; n < this.matrix[0].length; n++) {   // Board columns [7]
@@ -116,7 +183,6 @@ class Board {
             default:
               boardDivs[currentDiv].classList.remove('red');
               boardDivs[currentDiv].classList.remove('yellow');
-              break;
           }
           currentDiv++;
         }

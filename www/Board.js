@@ -116,22 +116,12 @@ class Board {
   }
 
 
-  // Not done yet, need to follow API
   markWin(combo) {
-    let winningComboMatrix = [...Array(6)].map(x => Array(7).fill(0));
+    let boardDivs = [...$$('.board > div')];
 
     for (let win of combo) {
-      winningComboMatrix[win[0]][win[1]] = 'win';
-    }
-
-    let boardDivs = [...$$('.board > div')];
-    let currentDiv = 0;
-
-    for (let winning of winningComboMatrix.flat()) {
-      if (winning === 'win') {
-        boardDivs[currentDiv].classList.add('win');
-      }
-      currentDiv++;
+      let divMarkWin = ((win[0]) * 7) + (win[1]);
+      boardDivs[divMarkWin].classList.add('win');
     }
   }
 

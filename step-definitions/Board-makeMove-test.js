@@ -69,7 +69,7 @@ module.exports = function () {
     // Should be all numbers and next (current) player should not be previous player 
     tellTurnPlayer.map(x => expect(x).to.be.a(value));
     expect(tellTurnPlayer[tellTurnPlayer.length - 1]).to.not.equal(tellTurnPlayer[tellTurnPlayer.length - 2]);
-    // Lets also check that (current) player is a number and the player "prior to previous" player
+    // Lets also check that (current) player is a number and the player is "prior to previous" player
     expect(fakeGame.board.currentPlayer).to.be.a(value).and.equal(tellTurnPlayer[tellTurnPlayer.length - 3]);
   });
 

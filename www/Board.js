@@ -161,19 +161,17 @@ class Board {
 
 
   render() {
-    // If board divs not exist, create them
-    if ($('.board').innerHTML === '') {
+    // If board empty create child divs
+    if (!$('.board').innerHTML) {
       for (let i = 0; i < this.matrix.flat(1).length; i++) {
         let firstDiv = document.createElement('div');
         let secondDiv = document.createElement('div');
         $('.board').appendChild(firstDiv).appendChild(secondDiv);
       }
     }
-    // Else when board elements already exist in the DOM
+    // Else when board child divs already exist
     else {
-      // Fetching board divs
       let boardDivs = [...$$('.board > div')];
-      // I have no idea how to "flatten" array in correct dimension (short solution) so using nested for-loops until better solution...
       let currentDiv = 0;
       for (let i = 0; i < this.matrix.length; i++) {        // A board row [6]
         for (let n = 0; n < this.matrix[0].length; n++) {   // Board columns [7]
@@ -183,7 +181,6 @@ class Board {
             default:
               boardDivs[currentDiv].classList.remove('red');
               boardDivs[currentDiv].classList.remove('yellow');
-              break;
           }
           currentDiv++;
         }

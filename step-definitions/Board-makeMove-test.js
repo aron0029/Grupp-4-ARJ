@@ -84,7 +84,7 @@ module.exports = function () {
     expect(await fakeGame.board.makeMove(0)).to.be.true;
   });
 
-  this.Then(/^board playInProgress property end up being set to false when board makeMove has finished move$/, function () {
+  this.Then(/^board playInProgress property should have been set to false when board makeMove has returned true$/, function () {
     // This step-definition should preseed previous step 
     // But since we already know makeMove sets playInProgress true upon method call we need only check that its false when finished
     expect(fakeGame.board.playInProgress).to.be.false;
@@ -117,7 +117,7 @@ module.exports = function () {
     }
   });
 
-  this.Then(/^board playInProgress property end up being set to false when board makeMove has skipped move$/, function () {
+  this.Then(/^board playInProgress property should have beeb set to false when board makeMove has returned false$/, function () {
     // This step-definition should preseed previous step 
     // But since we already know makeMove sets playInProgress true upon method call we need only check that its false when finished
     expect(fakeGame.board.playInProgress).to.be.false;

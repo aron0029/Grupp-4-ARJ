@@ -10,10 +10,10 @@ Feature: Making a move in the game
     And board currentPlayer property be set to type "number" of value 1 or 2 whichever is the next player in turn
     And game tellTurn method be called with board currentPlayer as argument
     And board makeMove method should return true
-    And board playInProgress property end up being set to false when board makeMove has finished move
+    And board playInProgress property should have been set to false when board makeMove has returned true
 
   Scenario: A player makes an invalid move
     Given board playInProgress property is initially false upon invalid move
     When there are no free positions available in a column for more game pieces
     Then board makeMove method should return false
-    And board playInProgress property end up being set to false when board makeMove has skipped move
+    And board playInProgress property should have beeb set to false when board makeMove has returned false

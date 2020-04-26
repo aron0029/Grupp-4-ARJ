@@ -19,6 +19,7 @@ class Board {
 
 
   async makeMove(column) {
+    console.log('hello')
     if (this.playInProgress) return null;
     if (!Number.isInteger(column) || (column > 6 && column < 0)) throw (new Error('column must be an integer between 0 and 6'));
 
@@ -133,7 +134,6 @@ class Board {
       }
       currentDiv++;
     }
-
   }
 
 
@@ -157,7 +157,9 @@ class Board {
   }
 
 
-  removeEventListener() { }
+  removeEventListener() {
+    $('.board').removeEventListener('click', this.listener);
+  }
 
 
   render() {

@@ -4,7 +4,6 @@ require('./_include-all')();
 
 module.exports = function () {
 
-  let listenerCalled = false;
   let winCheckCalled = false;
   let timesRendered;
   let tellTurnPlayer = [];

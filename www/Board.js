@@ -64,7 +64,48 @@ class Board {
   }
 
 
-  winCheck() { }
+  winCheck() {
+    let winOffset = [
+      [[0, 0], [0, 1], [0, 2], [0, 3]], // horizontal offset
+      [[0, 0], [1, 0], [2, 0], [3, 0]], // vertical offset
+      [[0, 0], [1, 1], [2, 2], [3, 3]], // diagonal 1 offset
+      [[0, 0], [1, -1], [2, -2], [3, -3]] // diagonal 2 offset
+    ];
+
+    let obj = {};
+    let winningCombo = [];
+
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 7; col++) {
+        for (let w of winOffset) {
+          let slots = w.map(([r, c]) => this.matrix[row + r] && this.matrix[row + r][col + c]).join('');
+
+          let count = 0;
+          this.matrix.flat().map(x => x !== 0 ? count++ : '');
+
+          if (slots === '1111' || slots === '2222') {
+
+            for (let win of w) {
+              winningCombo.push([row + win[0], col + win[1]]);
+            }
+
+            return obj = {
+              winner: +slots[0],
+              combo: winningCombo
+            }
+
+          }
+          else if (count === 42) {
+            return obj = {
+              winner: 'draw'
+            }
+          }
+
+        }
+      }
+    }
+    return false;
+  }
 
 
   markWin(combo) { }

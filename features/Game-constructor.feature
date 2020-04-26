@@ -2,7 +2,7 @@ Feature: Running the game
   The game should run when started
 
   Scenario: Starting the game by creating a new instance of game
-    Given that starting the game creates a new instance of Game without error
-    And that Game creates a new instance of Board without error
-    And that Game successfully adds an eventlistener for play again button element
-    Then the GUI message of the game should present the following message: "Röds tur..."
+    Given that the game is started by creating a new instance of Game
+    Then  game property board should be set to a new instance of Board by calling game start method
+    And game addEventListener method should be called
+    And game tellTurn method should be called by board with board currentPlayer value 1 as argument

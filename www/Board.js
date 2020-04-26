@@ -51,8 +51,16 @@ class Board {
       }
     }
 
-    // Check if won. Does nothing right now
-    this.winCheck();
+    // Check if won
+    let winCheck = this.winCheck();
+    if (winCheck) {
+      this.removeEventListener();
+      if (winCheck.combo) {
+        this.markWin(winCheck.combo);
+      }
+      this.game.over(winCheck.winner);
+      return true;
+    }
 
     // Change currentPlayer
     this.currentPlayer = (this.currentPlayer === 1 ? this.currentPlayer = 2 : this.currentPlayer = 1);

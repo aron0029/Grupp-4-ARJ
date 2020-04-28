@@ -1,4 +1,5 @@
-  # Johnny metod winCheck()
+Feature: When a player wins the game or it ends up in a draw
+  The game should check after each player move for a win or determine if the game ended in a draw
 
   Scenario: Check the whole board if anyone won
     When someone has won

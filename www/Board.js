@@ -44,7 +44,7 @@ class Board {
           }
         }
       }
-      else {
+      else { 
         // No drop possible, the column is full so do nothing
         this.playInProgress = false;
         return false;

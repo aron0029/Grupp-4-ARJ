@@ -1,0 +1,17 @@
+Game
+
+  constructor()
+
+    Innan spelet börjar ska man mata in namn för Player 1 och Player 2 och spara respektive namn i en variabel.
+
+  tellTurn()
+
+    Metoden ska ta tag i DOM-elementet med css-klassen message och byta dess innehåll till Player 1's namn + “ tur…” om player har värdet 1 och till  Player 2's namn + “ tur…” om player har värdet 2.
+
+  over(won)
+
+    Metoden ska ta tag i DOM-elementet med css-klassen message och byta dess innehåll till texten
+
+      “Det blev oavgjort!” om won är “draw”.
+      Player 1's namn + " vann!" om won är 1.
+      Player 2's namn + " vann!" om won är 2.

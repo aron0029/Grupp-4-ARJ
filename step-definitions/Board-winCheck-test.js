@@ -38,7 +38,7 @@ module.exports = function () {
 
     board.matrix = [...Array(6)].map(x => Array(7).fill(2));
     winCheck = board.winCheck();
-    expect(winCheck.winner).to.deep.equal(2,
+    expect(winCheck.winner).to.deep.equal(+two,
       'winCheck did not return winner as Player 2'
     );
 

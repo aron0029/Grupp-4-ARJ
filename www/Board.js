@@ -117,11 +117,9 @@ class Board {
 
 
   markWin(combo) {
-    let boardDivs = [...$$('.board > div')];
-
     for (let win of combo) {
-      let divMarkWin = ((win[0]) * 7) + (win[1]);
-      boardDivs[divMarkWin].classList.add('win');
+      let divMarkWin = ((win[0]) * 7) + (win[1] + 1);
+      $(".board > div:nth-child(" + divMarkWin + ")").classList.add('win')
     }
   }
 

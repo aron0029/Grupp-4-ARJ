@@ -6,35 +6,23 @@ module.exports = function () {
 
   // Overrides
 
-  class fakeGame extends Game {
-    constructor() {
-      super(game)
-      this.matrix = [];
-
-    }
-
-  }
-
-  class fakeBoard extends Board {
-
-  }
+  class FakeGame extends Game { }
 
   let board;
   let game;
   let winCheck;
 
-  game = new fakeGame();
+  game = new FakeGame();
   board = game.board;
-
 
   // Scenario: Check the whole board if anyone won
 
   this.When(/^someone has won$/, function () {
-    // test in other test further down
+    // test further down
   });
 
   this.Then(/^method should return an object when won$/, function () {
-    // test in other test further down
+    // test further down
   });
 
   this.Then(/^the object should have property "([^"]*)" with value (\d+) or (\d+) \(player\)$/, function (winner, one, two) {
@@ -50,7 +38,7 @@ module.exports = function () {
 
     board.matrix = [...Array(6)].map(x => Array(7).fill(2));
     winCheck = board.winCheck();
-    expect(winCheck.winner).to.deep.equal(2,
+    expect(winCheck.winner).to.deep.equal(+two,
       'winCheck did not return winner as Player 2'
     );
 

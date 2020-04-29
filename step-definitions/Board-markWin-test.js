@@ -7,13 +7,16 @@ module.exports = function () {
   // Overrides
 
   let markWinWasCalled = false;
+  let tellTurnPlayer = [];
+  let comboType;
 
-  class fakeGame extends Game {
-
+  class FakeGame extends Game {
+    start() { this.board = new FakeBoard(this); }
+    tellTurn(player) { tellTurnPlayer.push(player); }
   }
 
-  class fakeBoard extends Board {
-    markWin() { markWinWasCalled = true; }
+  class FakeBoard extends Board {
+    markWin(combo) { markWinWasCalled = true; comboType = combo }
   }
 
   let board;
@@ -25,35 +28,29 @@ module.exports = function () {
     // test further down
   });
 
-  this.Given(/^board makeMove method called board markWin method$/, function () {
-    game = new fakeGame();
+  this.Given(/^board makeMove method called board markWin method$/, async function () {
+    game = new FakeGame();
     board = game.board;
 
     board.matrix = [
       [0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
       [1, 0, 0, 0, 0, 0, 0],
       [1, 0, 0, 0, 0, 0, 0],
       [1, 0, 0, 0, 0, 0, 0]
     ];
-
-    board.makeMove(0);
-
-    console.log('playInProgress: ', board.playInProgress)
-    console.log('currentPlayer: ', board.currentPlayer)
-    console.log('makeMove: ', board.makeMove(0))
-    console.log('winCheck: ', board.winCheck())
-    console.log('playInProgress: ', board.playInProgress)
+    await board.makeMove(0);
 
     expect(markWinWasCalled, 'markWin was not called').to.be.true;
   });
 
-  this.Then(/^the argument passed by board makeMove method should be a type "([^"]*)" with a length of (\d+)$/, function (array, four) {
-
+  this.Then(/^the argument passed to markWin method should be a type array with a length of (\d+)$/, function (four) {
+    expect(Array.isArray(comboType), 'argument combo is not an array').to.be.true;
+    expect(comboType.length, 'argument combo length should be 4').to.deep.equal(+four);
   });
 
-  this.Then(/^each of the (\d+) elements of this array should be a type "([^"]*)" with (\d+) elements each containing type "([^"]*)"$/, function (four, array, two, numbers) {
+  this.Then(/^each of the (\d+) elements of this array should be a type 'array' with (\d+) elements each containing type "([^"]*)"$/, function (arg1, arg2, arg3) {
 
   });
 

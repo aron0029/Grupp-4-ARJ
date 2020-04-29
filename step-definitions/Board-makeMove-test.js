@@ -21,7 +21,8 @@ module.exports = function () {
   let fakeGame = new FakeGame();
   let realGame = new Game();
 
-  // By principle I don't necessarily want to introduce my own testdata so doing deep copy/clone of what developer did
+  // By principle I don't necessarily want to introduce my own testdata by creating/filling an array,
+  // so as tester i'm doing deep copy/clone of whatever developer did
   let initialMatrix = JSON.parse(JSON.stringify(fakeGame.board.matrix));
 
 
@@ -61,7 +62,7 @@ module.exports = function () {
 
   this.Then(/^board makeMove method should call render (\d+) times for any empty column on game board$/, async function (value) {
 
-    timesRendered = 0;  // Zeroing
+    timesRendered = 0;  // Zeroing any previous calls to render
     await fakeGame.board.makeMove(1);
 
     expect(timesRendered).to.equal(+value);
@@ -73,6 +74,7 @@ module.exports = function () {
 
     // Previous step-definition made 2 player moves on empty board at column [0] and [1]
     // Lets compare current matrix array against manually altered temporary array
+    // Q: Should we instead test boundry values by calling makeMove to fill matrix? Atleast corners/end positions for test-coverage?
     let tempMatrix = JSON.parse(JSON.stringify(initialMatrix));
     tempMatrix[5][0] = 1;
     tempMatrix[5][1] = 2;
@@ -190,16 +192,19 @@ module.exports = function () {
   });
 
 
-  this.When(/^makeMove is passed a column argument that is not of type "([^"]*)" integer with a value between (\d+) or (\d+)$/, function (arg1, arg2, arg3) {
+  this.When(/^makeMove is passed a column argument that is not of type "([^"]*)" integer with a value between (\d+) and (\d+)$/, function (arg1, arg2, arg3) {
 
     // Nothing to test here. Move on to next step
 
   });
 
 
-  this.Then(/^makeMove should throw the error "([^"]*)"$/, async function (expectedError) {
-    // Use Promise somehow?
-    //expect(realGame.board.makeMove(999)).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');;
-  });
+  //this.Then(/^makeMove should throw the error "([^"]*)"$/, async function (expectedError) {
+
+  // Async issue? Use Promise?
+  // Problem: expect doesn't seem to catch Error
+  //await expect(async () => await realGame.board.makeMove(999)).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+
+  //});
 
 }

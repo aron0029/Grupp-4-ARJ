@@ -20,5 +20,5 @@ Feature: Making a move in the game
 
   Scenario: Wrong column argument is passed to board makeMove method when player makes a move
     Given board playInProgress property is initially false upon any move
-    When makeMove is passed a column argument that is not of type "number" integer with a value between 0 or 6
+    When makeMove is passed a column argument that is not of type "number" integer with a value between 0 and 6
     Then makeMove should throw the error "column must be an integer between 0 and 6"

@@ -2,7 +2,8 @@ Feature: 4-in-a-row game graphical user interface
   The game should display and update game board graphics in the webbrowser
 
   Scenario: Running the game should draw an empty game board
-    Given that html div element with class .board exists when board render method is called when running the game
+    Given that board render method is called by board constructor when running the game
+    And that html div element with class .board exists when board render method is called when running the game
     And that this html div element with class .board is empty
     Then 42 html div elements should be added as children of that html div element each with a html div element child of their own
 

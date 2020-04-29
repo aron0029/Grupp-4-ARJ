@@ -9,7 +9,13 @@ module.exports = function () {
   /* ---------- Scenario: Running the game should draw an empty game board ---------- */
   /* -------------------------------------------------------------------------------- */
 
+  this.Given(/^that board render method is called by board constructor when running the game$/, function () {
+
+  });
+
   this.Given(/^that html div element with class \.board exists when board render method is called when running the game$/, function () {
+
+    expect($('.board')).to.be.true;
 
   });
 

@@ -19,6 +19,12 @@ module.exports = function () {
     markWin(combo) { markWinWasCalled = true; comboType = combo }
   }
 
+  class FakeGame2 extends Game {
+    start() { this.board = new FakeBoard2(this); }
+    tellTurn(player) { tellTurnPlayer.push(player); }
+  }
+  class FakeBoard2 extends Board { }
+
   let board;
   let game;
 
@@ -71,8 +77,28 @@ module.exports = function () {
 
   });
 
-  this.Then(/^markWin should add the class \.win to html div elements that correspond to the winning rows position in board matrix$/, function () {
-    // can we test this?
+  this.Then(/^markWin should add the class \.win to html div elements that correspond to the winning rows position in board matrix$/, async function () {
+    let game2 = new FakeGame2();
+    board = game2.board;
+    board.render();
+
+    board.matrix = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0]
+    ];
+
+    await board.makeMove(0);
+    let winningIndex = [14, 21, 28, 35]
+
+    for (let i = 0; i <= 3; i++) {
+      expect(winningIndex).to.include([...$$('.board > div')].indexOf([...$$('.win')][i]),
+        'markWin is not setting .win class in right div position'
+      )
+    }
   });
 
   // Scenario: The game was a draw

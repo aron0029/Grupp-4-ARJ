@@ -25,10 +25,6 @@ module.exports = function () {
   // Scenario: The game was won by a player
 
   this.Given(/^a player wins the game$/, function () {
-    // test further down
-  });
-
-  this.Given(/^board makeMove method called board markWin method$/, async function () {
     game = new FakeGame();
     board = game.board;
 
@@ -40,36 +36,62 @@ module.exports = function () {
       [1, 0, 0, 0, 0, 0, 0],
       [1, 0, 0, 0, 0, 0, 0]
     ];
+  });
+
+  this.Given(/^board makeMove method called board markWin method$/, async function () {
     await board.makeMove(0);
 
     expect(markWinWasCalled, 'markWin was not called').to.be.true;
   });
 
   this.Then(/^the argument passed to markWin method should be a type array with a length of (\d+)$/, function (four) {
-    expect(Array.isArray(comboType), 'argument combo is not an array').to.be.true;
-    expect(comboType.length, 'argument combo length should be 4').to.deep.equal(+four);
+    expect(comboType).to.be.an('array'
+      , 'argument combo is not an array'
+    );
+    expect(comboType, 'argument combo length should be 4').to.have.lengthOf(+four);
   });
 
-  this.Then(/^each of the (\d+) elements of this array should be a type 'array' with (\d+) elements each containing type "([^"]*)"$/, function (arg1, arg2, arg3) {
+  this.Then(/^each of the (\d+) elements of this array should be a type 'array' with (\d+) elements each containing type 'number'$/, function (four, two) {
+    comboType.map(x => expect(x).to.be.an('array'
+      , 'argument combo inner elements is not an array'
+    ));
 
+    comboType.map(x => x.map(y => expect(y).to.be.a('number',
+      'elements in combo is not containing numbers'
+    )));
   });
 
   this.Then(/^first of these (\d+) elements be set to a value between (\d+) to (\d+) and the second element be set to a value of (\d+) to (\d+)$/, function (two, zero, six, zero2, seven) {
+    comboType.map(x => expect(x[0]).to.be.within(zero, six,
+      'first element in combo is not between 0 and 6'
+    ))
+    comboType.map(x => expect(x[1]).to.be.within(zero2, seven,
+      'second element in combo is not between 0 and 7'
+    ))
 
   });
 
   this.Then(/^markWin should add the class \.win to html div elements that correspond to the winning rows position in board matrix$/, function () {
-
+    // can we test this?
   });
 
   // Scenario: The game was a draw
 
   this.Given(/^the board is full without any player winning$/, function () {
-
+    board.matrix = [
+      [2, 0, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2]
+    ];
   });
 
-  this.Then(/^markWin should not be called$/, function () {
-
+  this.Then(/^markWin should not be called$/, async function () {
+    markWinWasCalled = false;
+    await board.makeMove(1);
+    expect(markWinWasCalled, 'markWin should not be called when draw').to.be.false;
   });
 
 }

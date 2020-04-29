@@ -5,7 +5,7 @@ Feature: Showing a winning combination on game board
     Given a player wins the game
     And board makeMove method called board markWin method
     Then the argument passed to markWin method should be a type array with a length of 4
-    And each of the 4 elements of this array should be a type 'array' with 2 elements each containing type "numbers"
+    And each of the 4 elements of this array should be a type 'array' with 2 elements each containing type 'number'
     And first of these 2 elements be set to a value between 0 to 6 and the second element be set to a value of 0 to 7
     Then markWin should add the class .win to html div elements that correspond to the winning rows position in board matrix
 

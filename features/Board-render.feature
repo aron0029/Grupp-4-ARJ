@@ -20,6 +20,8 @@ Feature: 4-in-a-row game graphical user interface
     Then class .yellow should be added to one of the 42 html div elements corresponding to last player move
     And all previous player moves should remain visible and correspond to values in property board matrix array
 
+  # Unfinished
   Scenario: Running the game when html div element with class .board is missing
 
+  # Unfinished
   Scenario: Running the game when child elements of html div element with class .board is missing

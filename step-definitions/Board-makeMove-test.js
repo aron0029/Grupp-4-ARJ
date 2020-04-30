@@ -4,6 +4,17 @@ require('./_include-all')();
 require('./_async-helpers.js');
 
 module.exports = function () {
+  global.fixNoSuchWindowError = driver => {
+
+    driver.close = () => {
+  
+      return { then: () => new Promise(res => res()) }
+  
+    }
+  
+    return () => { };
+  
+  };
 
   let winCheckCalled = false;
   let timesRendered;

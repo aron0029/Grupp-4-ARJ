@@ -20,7 +20,7 @@ class Board {
 
   async makeMove(column) {
     if (this.playInProgress) return null;
-    if (!Number.isInteger(column) || (column > 6 && column < 0)) throw (new Error('column must be an integer between 0 and 6'));
+    if (!Number.isInteger(column) || column > 6 && column < 0) throw (new Error('column must be an integer between 0 and 6'));
 
     // Prevent a move when makeMove() is running
     this.playInProgress = true;
@@ -117,11 +117,9 @@ class Board {
 
 
   markWin(combo) {
-    let boardDivs = [...$$('.board > div')];
-
     for (let win of combo) {
-      let divMarkWin = ((win[0]) * 7) + (win[1]);
-      boardDivs[divMarkWin].classList.add('win');
+      let divMarkWin = ((win[0]) * 7) + (win[1] + 1);
+      $(".board > div:nth-child(" + divMarkWin + ")").classList.add('win')
     }
   }
 

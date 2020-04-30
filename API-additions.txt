@@ -2,7 +2,7 @@ Game
 
   constructor()
 
-    Innan spelet börjar ska man mata in namn för Spelare 1 och Spelare 2 och spara respektive namn i en array med 2 element.
+    Innan spelet börjar ska man mata in namn för Spelare 1 och Spelare 2 och spara respektive namn i egenskapen 'playerNames' som en array med 2 element.
 
   tellTurn()
 

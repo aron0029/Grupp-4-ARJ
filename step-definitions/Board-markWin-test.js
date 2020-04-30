@@ -4,17 +4,7 @@ require('./_include-all')();
 require('./_async-helpers.js');
 
 module.exports = function () {
-  global.fixNoSuchWindowError = driver => {
-
-    driver.close = () => {
-  
-      return { then: () => new Promise(res => res()) }
-  
-    }
-  
-    return () => { };
-  
-  };
+  this.After(() => fixNoSuchWindowError(driver));
 
   // Overrides
 

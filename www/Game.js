@@ -3,6 +3,12 @@ class Game {
   constructor() {
     this.board = {};
     this.addEventListener();
+
+    this.playerNames = [
+      prompt('Ange namn för spelare 1:'),
+      prompt('Ange namn för spelare 2:')
+    ];
+
     this.start();
   }
 
@@ -13,15 +19,15 @@ class Game {
   tellTurn(player) {
     if (player !== 1 && player !== 2) throw (new Error('player must be 1 or 2'));
     let message = $('.message');
-    player === 1 ? message.innerHTML = 'Röds tur...' : message.innerHTML = 'Guls tur...';
+    player === 1 ? message.innerHTML = (this.playerNames[0] + ' tur...') : message.innerHTML = (this.playerNames[1] + ' tur...');
   }
 
   over(won) {
     if (won !== 1 && won !== 2 && won !== 'draw') throw (new Error('won must be “draw”, 1 or 2'));
     let message = $('.message');
     switch (won) {
-      case 1: message.innerHTML = 'Röd vann!'; break;
-      case 2: message.innerHTML = 'Gul vann!'; break;
+      case 1: message.innerHTML = this.playerNames[0] + ' vann!'; break;
+      case 2: message.innerHTML = this.playerNames[1] + ' vann!'; break;
       default: message.innerHTML = 'Det blev oavgjort!';
     }
     let againButton = document.createElement('button');

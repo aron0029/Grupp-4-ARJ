@@ -5,14 +5,12 @@ require('./_async-helpers.js');
 
 module.exports = function () {
 
-  let game;
+  let fakeGame;
+  let realGame;
   let wonIsWhatWhat;
   let overIsCalled = false;
 
   class FakeGame extends Game {
-  }
-
-  class FakeGame2 extends Game {
     over(won) {
       overIsCalled = true;
       wonIsWhatWhat = won;
@@ -27,16 +25,16 @@ module.exports = function () {
 
   this.Then(/^check if argument won's value is "([^"]*)", (\d+) or (\d+)\. If not, cast error "([^"]*)"$/, function (draw, player1, player2, expectedErrorMsg) {
 
-    game = new FakeGame();
+    realGame = new Game();
 
-    expect(() => game.over(draw)).to.not.throw(Error,
+    expect(() => realGame.over(draw)).to.not.throw(Error,
       "Sending won as 'draw' should not throw any error"
     );
 
-    expect(() => game.over(+player1), "Sending won as 1 should not throw any error").to.not.throw(Error);
-    expect(() => game.over(+player2), "Sending won as 2 should not throw any error").to.not.throw(Error);
+    expect(() => realGame.over(+player1), "Sending won as 1 should not throw any error").to.not.throw(Error);
+    expect(() => realGame.over(+player2), "Sending won as 2 should not throw any error").to.not.throw(Error);
 
-    expect(() => game.over("oavgjort")).to.throw(
+    expect(() => realGame.over("oavgjort")).to.throw(
       Error,
       expectedErrorMsg,
       'over(won) is not throwing correct error message'
@@ -48,9 +46,9 @@ module.exports = function () {
 
   this.When(/^over\(won\) is called when draw$/, async function () {
 
-    game = new FakeGame2();
+    fakeGame = new FakeGame();
 
-    game.board.matrix = [
+    fakeGame.board.matrix = [
       [2, 0, 2, 1, 2, 2, 1],
       [2, 1, 2, 1, 2, 2, 1],
       [2, 1, 2, 1, 2, 2, 1],
@@ -58,7 +56,7 @@ module.exports = function () {
       [1, 2, 1, 2, 1, 2, 2],
       [1, 2, 1, 2, 1, 2, 2]
     ];
-    await game.board.makeMove(1);
+    await fakeGame.board.makeMove(1);
     expect(overIsCalled, 'over() method was not called when the game was draw').to.be.true;
 
   });
@@ -71,8 +69,8 @@ module.exports = function () {
 
   this.Then(/^check if css class "([^"]*)" innerHTML is "([^"]*)" when draw$/, async function (messageClass, drawHtmlMsg) {
 
-    game = new FakeGame();
-    game.board.matrix = [
+    realGame = new Game();
+    realGame.board.matrix = [
       [2, 0, 2, 1, 2, 2, 1],
       [2, 1, 2, 1, 2, 2, 1],
       [2, 1, 2, 1, 2, 1, 1],
@@ -80,7 +78,7 @@ module.exports = function () {
       [1, 2, 1, 2, 1, 2, 2],
       [1, 2, 1, 2, 1, 2, 2]
     ];
-    await game.board.makeMove(1);
+    await realGame.board.makeMove(1);
     expect($("." + messageClass + "").innerHTML).to.includes(drawHtmlMsg);
 
   });
@@ -89,8 +87,8 @@ module.exports = function () {
 
   this.When(/^over\(won\) is called when player one won$/, async function () {
 
-    game = new FakeGame2();
-    game.board.matrix = [
+    fakeGame = new FakeGame();
+    fakeGame.board.matrix = [
       [2, 0, 2, 1, 2, 2, 1],
       [2, 0, 2, 1, 2, 2, 1],
       [2, 1, 2, 1, 2, 1, 1],
@@ -98,7 +96,7 @@ module.exports = function () {
       [1, 1, 1, 2, 1, 2, 2],
       [1, 2, 1, 2, 1, 2, 2]
     ];
-    await game.board.makeMove(1);
+    await fakeGame.board.makeMove(1);
 
   });
 
@@ -112,11 +110,11 @@ module.exports = function () {
 
   this.Then(/^check if css class "([^"]*)" innerHTML is Player (\d+)'s name \+ "([^"]*)" when Player one won$/, async function (messageClass, player1, wonMsg) {
 
-    const names = ['Anna', 'Bertil'];
+    let names = ['Anna', 'Bertil'];
     let playerOneName = names[0];
     global.prompt = () => names.shift();
-    let game2 = new FakeGame();
-    game2.board.matrix = [
+    realGame = new Game();
+    realGame.board.matrix = [
       [0, 0, 2, 1, 2, 2, 1],
       [0, 1, 2, 1, 2, 2, 1],
       [0, 1, 2, 1, 2, 1, 1],
@@ -124,7 +122,8 @@ module.exports = function () {
       [1, 1, 1, 2, 1, 2, 2],
       [1, 1, 1, 2, 1, 2, 2]
     ];
-    await game2.board.makeMove(0);
+    realGame.board.currentPlayer = +player1;
+    await realGame.board.makeMove(0);
 
     expect($("." + messageClass + "").innerHTML).to.includes(playerOneName + wonMsg);
 
@@ -132,15 +131,47 @@ module.exports = function () {
 
   // Scenario: Check if argument "won" is 2
 
-  this.When(/^over\(won\) is called when player two won$/, function () {
+  this.When(/^over\(won\) is called when player two won$/, async function () {
+
+    fakeGame = new FakeGame();
+    fakeGame.board.matrix = [
+      [1, 0, 2, 1, 2, 2, 1],
+      [1, 0, 2, 1, 2, 2, 1],
+      [2, 2, 2, 1, 2, 1, 1],
+      [2, 1, 1, 2, 1, 2, 2],
+      [2, 1, 1, 2, 1, 2, 2],
+      [2, 2, 1, 2, 1, 2, 2]
+    ];
+    await fakeGame.board.makeMove(1);
 
   });
 
   this.Then(/^check if argument won is (\d+) when Player two won$/, function (player2) {
 
+    expect(wonIsWhatWhat).to.equal(+player2,
+      'when player 2 won, won in method over() should be 2'
+    );
+
   });
 
-  this.Then(/^check if css class "([^"]*)" innerHTML is Player (\d+)'s name \+ "([^"]*)" when Player two won$/, function (messageClass, player2, arg2) {
+  this.Then(/^check if css class "([^"]*)" innerHTML is Player (\d+)'s name \+ "([^"]*)" when Player two won$/, async function (messageClass, player2, wonMsg) {
+
+    let names = ['Anna', 'Bertil'];
+    let playerTwoName = names[1];
+    global.prompt = () => names.shift();
+    realGame = new Game();
+    realGame.board.matrix = [
+      [0, 0, 2, 1, 2, 2, 1],
+      [0, 1, 2, 1, 2, 2, 1],
+      [0, 1, 2, 1, 2, 1, 1],
+      [2, 2, 1, 2, 1, 2, 2],
+      [2, 1, 1, 2, 1, 2, 2],
+      [2, 1, 1, 2, 1, 2, 2]
+    ];
+    realGame.board.currentPlayer = +player2;
+    await realGame.board.makeMove(0);
+
+    expect($("." + messageClass + "").innerHTML).to.includes(playerTwoName + wonMsg);
 
   });
 

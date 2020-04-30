@@ -22,3 +22,6 @@ Feature: Making a move in the game
     Given board playInProgress property is initially false upon any move
     When makeMove is passed a column argument that is not of type "number" integer with a value between 0 and 6
     Then makeMove should throw the error "column must be an integer between 0 and 6"
+
+  Scenario: Filling entire board during a game
+# Given...

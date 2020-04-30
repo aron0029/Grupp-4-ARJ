@@ -27,7 +27,7 @@ class Game {
   }
 
   over(won) {
-    if (won !== 1 && won !== 2 && won !== 'draw') { throw (new Error('won must be “draw”, 1 or 2')); }
+    if (won !== 1 && won !== 2 && won !== 'draw') { throw (new Error("won must be 'draw', 1 or 2")); }
     let message = $('.message');
     switch (won) {
       case 1: message.innerHTML = this.playerNames[0] + ' vann!'; break;

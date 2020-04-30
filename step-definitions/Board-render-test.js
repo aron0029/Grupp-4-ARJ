@@ -6,6 +6,8 @@ module.exports = function () {
 
   let renderCalled = false;
   let fakeGame;
+  let realGame;
+  let lastPlayer;
 
   class FakeGame extends Game {
     start() { this.board = new FakeBoard(this); }
@@ -15,14 +17,18 @@ module.exports = function () {
     render() { renderCalled = true; }
   }
 
+  fakeGame = new FakeGame();
+
+  // By principle I don't necessarily want to introduce my own testdata by creating/filling an array,
+  // so as tester i'm doing deep copy/clone of whatever developer did
+  let initialMatrix = JSON.parse(JSON.stringify(fakeGame.board.matrix));
+
 
   /* -------------------------------------------------------------------------------- */
   /* ---------- Scenario: Running the game should draw an empty game board ---------- */
   /* -------------------------------------------------------------------------------- */
 
   this.Given(/^that board render method is called by board constructor when running the game$/, function () {
-
-    fakeGame = new FakeGame();
 
     expect(renderCalled).to.be.true;
 
@@ -35,13 +41,33 @@ module.exports = function () {
 
   });
 
+
   this.Given(/^that this html div element with class \.board is empty$/, function () {
 
+    // Expected empty since fakeGame render is overridden. Call from constructor does nothing
     expect($('.board').innerHTML).to.equal('');
 
   });
 
-  this.Then(/^(\d+) html div elements should be added as children of that html div element each with a html div element child of their own$/, function (arg1) {
+
+  this.Then(/^(\d+) html div elements should be added as children of that html div element each with a html div element child of their own$/, function (value) {
+
+    // Instance of realGame to run initial render in document
+    realGame = new Game();
+
+    let allDivs = [...$('.board').children];
+    let parentDivs = [];
+    let childDivs = [];
+
+    // .board div must have exactly 42 children that are divs
+    allDivs.map(x => x.localName === 'div' ? parentDivs.push(x) : '');
+
+    expect(parentDivs.length).to.equal(+value);
+
+    // Each of 42 parents must have exactly 1 child that is div
+    parentDivs.map(x => x.children.length === 1 && x.firstChild.localName === 'div' ? childDivs.push(x.firstChild) : '');
+
+    expect(childDivs.length).to.equal(+value);
 
   });
 
@@ -52,21 +78,93 @@ module.exports = function () {
 
   this.Given(/^that html div element with class \.board exists when board render method is called when red player (\d+) makes a move$/, function (arg1) {
 
-  });
-
-  this.Given(/^that board render method was called after move was made by red player$/, function () {
+    expect($('.board')).to.not.be.null;
 
   });
 
-  this.When(/^board currentPlayer property value was (\d+) on move by red player$/, function (arg1) {
+
+  this.Given(/^that board render method was called after move was made by red player$/, async function () {
+
+    // Precondition for next step-definition
+    lastPlayer = fakeGame.board.currentPlayer;
+
+    renderCalled = false;
+
+    await fakeGame.board.makeMove(0);
+
+    expect(renderCalled).to.be.true;
 
   });
 
-  this.Then(/^class \.red should be added to one of the (\d+) html div elements corresponding to last player move$/, function (arg1) {
+
+  this.When(/^board currentPlayer property value was (\d+) on move by red player$/, function (value) {
+
+    // Last player
+    expect(lastPlayer).to.equal(+value);
 
   });
 
-  this.Then(/^all previous moves should remain visible including red player 1's and correspond to values in property board matrix array$/, function () {
+
+  this.Then(/^class \.red should be added to one of the (\d+) html div elements corresponding to last player move$/, async function (arg1) {
+
+    // Resetting matrix
+    realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
+
+    // Resetting divs
+    $('.board').innerHTML = '';
+    realGame.board.render();
+
+
+    // Making sure red player 1 is current
+    realGame.board.currentPlayer = 1;
+
+    let column = 3;
+    await realGame.board.makeMove(column);
+
+    // Should only be a single .red div at this point
+    expect($$('.red').length).to.equal(1);
+    expect($$('.yellow').length).to.equal(0);
+
+    // Check column
+    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column);
+
+    // Checking that .red div corresponds to bottom of row in board matrix
+    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 1);
+
+  });
+
+
+  this.Then(/^all previous moves should remain visible including red player 1's and correspond to values in property board matrix array$/, async function () {
+
+    // Resetting matrix
+    realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
+
+    // Resetting divs
+    $('.board').innerHTML = '';
+    realGame.board.render();
+
+    // Making sure red player 1 is current
+    realGame.board.currentPlayer = 1;
+
+
+    // Dropping a single piece in each column and checking corresponding div
+    let players = ['yellow', 'red'];
+    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
+
+      await realGame.board.makeMove(i);
+
+      // Starting at div [index 35]
+      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.currentPlayer - 1]);
+    }
+
+    // Checking divs against board matrix
+    players.reverse();
+    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
+
+      // Starting at div [index 35]
+      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.matrix[5][i] - 1]);
+
+    }
 
   });
 
@@ -77,21 +175,83 @@ module.exports = function () {
 
   this.Given(/^that html div element with class \.board exists when board render method is called when yellow player (\d+) makes a move$/, function (arg1) {
 
-  });
+    fakeGame = new FakeGame;
 
-  this.Given(/^that board render method was called after move was made by yellow player$/, function () {
-
-  });
-
-  this.When(/^board currentPlayer property value was (\d+) on move by yellow player$/, function (arg1) {
+    expect($('.board')).to.not.be.null;
 
   });
 
-  this.Then(/^class \.yellow should be added to one of the (\d+) html div elements corresponding to last player move$/, function (arg1) {
+  /*
+    this.Given(/^that board render method was called after move was made by yellow player$/, function () {
+  
+  
+    });
+  
+    this.When(/^board currentPlayer property value was (\d+) on move by yellow player$/, function (arg1) {
+  
+  
+    });
+  */
+
+  this.Then(/^class \.yellow should be added to one of the (\d+) html div elements corresponding to last player move$/, async function (arg1) {
+
+    // Resetting matrix
+    realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
+
+    // Resetting divs
+    $('.board').innerHTML = '';
+    realGame.board.render();
+
+    // Making sure red player 1 is current
+    realGame.board.currentPlayer = 2;
+
+    let column = 3;
+    await realGame.board.makeMove(column);
+
+    // Should only be a single .red div at this point
+    expect($$('.yellow').length).to.equal(1);
+    expect($$('.red').length).to.equal(0);
+
+    // Check column
+    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
+
+    // Checking that .red div corresponds to bottom of row in board matrix
+    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1);
 
   });
 
-  this.Then(/^all previous moves should remain visible including yellow player 2's and correspond to values in property board matrix array$/, function () {
+
+  this.Then(/^all previous moves should remain visible including yellow player 2's and correspond to values in property board matrix array$/, async function () {
+
+    // Resetting matrix
+    realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
+
+    // Resetting divs
+    $('.board').innerHTML = '';
+    realGame.board.render();
+
+    // Making sure yellow player 2 is current
+    realGame.board.currentPlayer = 2;
+
+
+    // Dropping a single piece in each column and checking corresponding div
+    let players = ['yellow', 'red'];
+    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
+
+      await realGame.board.makeMove(i);
+
+      // Starting at div [index 35]
+      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.currentPlayer - 1]);
+    }
+
+    // Checking divs against board matrix
+    players.reverse();
+    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
+
+      // Starting at div [index 35]
+      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.matrix[5][i] - 1]);
+
+    }
 
   });
 

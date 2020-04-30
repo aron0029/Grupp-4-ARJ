@@ -5,7 +5,7 @@ class Game {
     this.addEventListener();
 
     if (window.phantom) {
-      this.playerNames = ['Röd', 'Olle'];
+      this.playerNames = ['Röd', 'Gul'];
     } else {
       this.playerNames = [
         prompt('Ange namn för spelare 1:'),

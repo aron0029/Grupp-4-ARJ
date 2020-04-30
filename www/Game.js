@@ -4,10 +4,14 @@ class Game {
     this.board = {};
     this.addEventListener();
 
-    this.playerNames = [
-      prompt('Ange namn för spelare 1:'),
-      prompt('Ange namn för spelare 2:')
-    ];
+    if (window.phantom) {
+      this.playerNames = ['Röd', 'Gul'];
+    } else {
+      this.playerNames = [
+        prompt('Ange namn för spelare 1:'),
+        prompt('Ange namn för spelare 2:')
+      ];
+    }
 
     this.start();
   }
@@ -17,13 +21,13 @@ class Game {
   }
 
   tellTurn(player) {
-    if (player !== 1 && player !== 2) throw (new Error('player must be 1 or 2'));
+    if (player !== 1 && player !== 2) { throw (new Error('player must be 1 or 2')); }
     let message = $('.message');
-    player === 1 ? message.innerHTML = (this.playerNames[0] + ' tur...') : message.innerHTML = (this.playerNames[1] + ' tur...');
+    player === 1 ? message.innerHTML = (this.playerNames[0] + 's tur...') : message.innerHTML = (this.playerNames[1] + 's tur...');
   }
 
   over(won) {
-    if (won !== 1 && won !== 2 && won !== 'draw') throw (new Error('won must be “draw”, 1 or 2'));
+    if (won !== 1 && won !== 2 && won !== 'draw') { throw (new Error("won must be 'draw', 1 or 2")); }
     let message = $('.message');
     switch (won) {
       case 1: message.innerHTML = this.playerNames[0] + ' vann!'; break;
@@ -38,14 +42,10 @@ class Game {
   }
 
   addEventListener() {
-    if ($('.message')) {
-      $('.message').addEventListener("click", (event) => {
-        if (event.target.classList.contains('again')) this.start();
-      });
-    }
-    else {
-      throw (new Error('Could not add .message eventlistener!'));
-    }
+    $('.message').addEventListener("click", (event) => {
+      if (event.target.classList.contains('again')) { this.start(); }
+    });
+
   }
 }
 

@@ -42,14 +42,10 @@ class Game {
   }
 
   addEventListener() {
-    if ($('.message')) {
-      $('.message').addEventListener("click", (event) => {
-        if (event.target.classList.contains('again')) { this.start(); }
-      });
-    }
-    else {
-      throw (new Error('Could not add .message eventlistener!'));
-    }
+    $('.message').addEventListener("click", (event) => {
+      if (event.target.classList.contains('again')) { this.start(); }
+    });
+
   }
 }
 

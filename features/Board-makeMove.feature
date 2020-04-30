@@ -16,4 +16,9 @@ Feature: Making a move in the game
     Given board playInProgress property is initially false upon invalid move
     When there are no free positions available in a column for more game pieces
     Then board makeMove method should return false
-    And board playInProgress property should have beeb set to false when board makeMove has returned false
+    And board playInProgress property should have been set to false when board makeMove has returned false
+
+  Scenario: Wrong column argument is passed to board makeMove method when player makes a move
+    Given board playInProgress property is initially false upon any move
+    When makeMove is passed a column argument that is not of type "number" integer with a value between 0 and 6
+    Then makeMove should throw the error "column must be an integer between 0 and 6"

@@ -203,7 +203,33 @@ module.exports = function () {
 
   this.Then(/^makeMove should throw the error "([^"]*)"$/, async function (expectedError) {
 
-    expect(await realGame.board.makeMove(999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    // Testing upper and lower boundry
+    expect(await realGame.board.makeMove(7).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(-1).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+
+    // Testing invalid types
+    expect(await realGame.board.makeMove('string').throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove('1').throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove('1.1').throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove([1]).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove({}).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(true).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(false).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(undefined).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(null).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+
+    // Testing invalid floats
+    expect(await realGame.board.makeMove(-1.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(1.999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(-1.999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+
+    // Testing upper boundry with invalid floats
+    expect(await realGame.board.makeMove(5.999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(6.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+
+    // Testing lower boundry invalid floats
+    expect(await realGame.board.makeMove(0.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(-0.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
 
   });
 

@@ -13,12 +13,12 @@ Feature: Checking if game is over
   Scenario: Check if argument "won" is 1
     When over(won) is called when player one won
     Then check if argument won is 1 when Player one won
-    And check if css class "message" innerHTML is "Röd vann!" when Player one won
+    And check if css class "message" innerHTML is Player 1's name + " vann!" when Player one won
 
   Scenario: Check if argument "won" is 2
     When over(won) is called when player two won
     Then check if argument won is 2 when Player two won
-    And check if css class "message" innerHTML is "Gul vann!" when Player two won
+    And check if css class "message" innerHTML is Player 2's name + " vann!" when Player two won
 
   Scenario: Play again when game is over
     When the game is over

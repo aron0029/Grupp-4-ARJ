@@ -4,10 +4,14 @@ class Game {
     this.board = {};
     this.addEventListener();
 
-    this.playerNames = [
-      prompt('Ange namn för spelare 1:'),
-      prompt('Ange namn för spelare 2:')
-    ];
+    if (window.phantom) {
+      this.playerNames = ['Röd', 'Olle'];
+    } else {
+      this.playerNames = [
+        prompt('Ange namn för spelare 1:'),
+        prompt('Ange namn för spelare 2:')
+      ];
+    }
 
     this.start();
   }
@@ -19,7 +23,7 @@ class Game {
   tellTurn(player) {
     if (player !== 1 && player !== 2) throw (new Error('player must be 1 or 2'));
     let message = $('.message');
-    player === 1 ? message.innerHTML = (this.playerNames[0] + ' tur...') : message.innerHTML = (this.playerNames[1] + ' tur...');
+    player === 1 ? message.innerHTML = (this.playerNames[0] + 's tur...') : message.innerHTML = (this.playerNames[1] + 's tur...');
   }
 
   over(won) {

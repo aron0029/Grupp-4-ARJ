@@ -203,7 +203,7 @@ module.exports = function () {
 
   this.Then(/^makeMove should throw the error "([^"]*)"$/, async function (expectedError) {
 
-    // Testing upper and lower boundry
+    // Testing upper and lower integer boundry
     expect(await realGame.board.makeMove(7).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
     expect(await realGame.board.makeMove(-1).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
 

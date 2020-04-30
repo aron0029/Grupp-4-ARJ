@@ -3,7 +3,7 @@ Feature: Checking if game is over
 
   Scenario: Check if argument "won" is valid
     When over(won) is called
-    Then check if argument won's value is "draw", 1 or 2. If not, cast error "'won must be “draw”, 1 or 2'"
+    Then check if argument won's value is "draw", 1 or 2. If not, cast error "won must be 'draw', 1 or 2"
 
   Scenario: Check if argument "won" is draw
     When over(won) is called when draw

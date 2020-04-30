@@ -5,11 +5,18 @@ require('./_async-helpers.js');
 
 module.exports = function () {
 
-  let wonIs;
   let game;
+  let wonIsWhatWhat;
+  let overIsCalled = false;
 
   class FakeGame extends Game {
+  }
 
+  class FakeGame2 extends Game {
+    over(won) {
+      overIsCalled = true;
+      wonIsWhatWhat = won;
+    }
   }
 
   // Scenario: Check if argument "won" is valid
@@ -31,23 +38,50 @@ module.exports = function () {
 
     expect(() => game.over("oavgjort")).to.throw(
       Error,
-      'won must be “draw”, 1 or 2',
-      'over(won) is not throwing correct error'
+      expectedErrorMsg,
+      'over(won) is not throwing correct error message'
     );
 
   });
 
   // Scenario: Check if argument "won" is draw
 
-  this.When(/^over\(won\) is called when draw$/, function () {
+  this.When(/^over\(won\) is called when draw$/, async function () {
+
+    game = new FakeGame2()
+
+    game.board.matrix = [
+      [2, 0, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2]
+    ];
+    await game.board.makeMove(1);
+    expect(overIsCalled, 'over() method was not called when the game was draw').to.be.true;
 
   });
 
-  this.Then(/^check if argument won is "([^"]*)"$/, function (arg1) {
+  this.Then(/^check if argument won is "([^"]*)"$/, function (drawString) {
+
+    expect(wonIsWhatWhat).to.equal(drawString)
 
   });
 
-  this.Then(/^check if css class "([^"]*)" innerHTML is "([^"]*)" when draw$/, function (arg1, arg2) {
+  this.Then(/^check if css class "([^"]*)" innerHTML is "([^"]*)" when draw$/, async function (messageClass, drawHtmlMsg) {
+
+    game = new FakeGame()
+    game.board.matrix = [
+      [2, 0, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2]
+    ];
+    await game.board.makeMove(1);
+    expect($("." + messageClass + "").innerHTML).to.includes(drawHtmlMsg)
 
   });
 

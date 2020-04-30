@@ -1,4 +1,5 @@
 require('./_include-all')();
+require('./_async-helpers.js');
 
 module.exports = function () {
 

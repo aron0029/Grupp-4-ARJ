@@ -20,7 +20,7 @@ class Board {
 
   async makeMove(column) {
     if (this.playInProgress) return null;
-    if (!Number.isInteger(column) || column > 6 && column < 0) throw (new Error('column must be an integer between 0 and 6'));
+    if (!Number.isInteger(column) || column > 6 || column < 0) throw (new Error('column must be an integer between 0 and 6'));
 
     // Prevent a move when makeMove() is running
     this.playInProgress = true;
@@ -44,7 +44,7 @@ class Board {
           }
         }
       }
-      else { 
+      else {
         // No drop possible, the column is full so do nothing
         this.playInProgress = false;
         return false;

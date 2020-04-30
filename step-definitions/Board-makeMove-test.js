@@ -201,12 +201,10 @@ module.exports = function () {
   });
 
 
-  //this.Then(/^makeMove should throw the error "([^"]*)"$/, async function (expectedError) {
+  this.Then(/^makeMove should throw the error "([^"]*)"$/, async function (expectedError) {
 
-  // Async issue? Use Promise?
-  // Problem: expect doesn't seem to catch Error
-  //await expect(async () => await realGame.board.makeMove(999)).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
 
-  //});
+  });
 
 }

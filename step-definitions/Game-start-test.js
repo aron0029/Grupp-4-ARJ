@@ -3,11 +3,11 @@ require('./_async-helpers.js');
 
 module.exports = function () {
 
-    
 
 
-this.When(/^method start\(\) is called$/, function (callback) {
-   expect 
+
+  this.When(/^method start\(\) is called$/, function (callback) {
+    expect
     callback(null, 'pending');
   });
 

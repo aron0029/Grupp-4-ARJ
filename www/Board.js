@@ -20,8 +20,8 @@ class Board {
 
 
   async makeMove(column) {
-    if (this.playInProgress) return null;
-    if (!Number.isInteger(column) || (column > 6 && column < 0)) throw (new Error('column must be an integer between 0 and 6'));
+    if (this.playInProgress) { return null };
+    if (!Number.isInteger(column) || column > 6 || column < 0) { throw (new Error('column must be an integer between 0 and 6')); }
 
     // Prevent a move when makeMove() is running
     this.playInProgress = true;
@@ -118,32 +118,25 @@ class Board {
 
 
   markWin(combo) {
-    let boardDivs = [...$$('.board > div')];
-
     for (let win of combo) {
-      let divMarkWin = ((win[0]) * 7) + (win[1]);
-      boardDivs[divMarkWin].classList.add('win');
+      let divMarkWin = ((win[0]) * 7) + (win[1] + 1);
+      $(".board > div:nth-child(" + divMarkWin + ")").classList.add('win')
     }
   }
 
 
   addEventListener() {
-    if ($('.board')) {
-      this.listener = (event) => {
-        let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
-        let selectedCol = clickedDiv % this.matrix[0].length;
-        // Unused. Keep for unit-testing purposes. This will give the row of a clicked div
-        //let selectedRow = Math.floor(clickedDiv / this.matrix[0].length);
-        //console.log('You clicked position corresponding to this.matrix[' + selectedRow + '][' + selectedCol + ']');
-        //this.matrix[selectedRow][selectedCol] = this.currentPlayer;
-        //this.render();
-        this.makeMove(selectedCol);
-      };
-      $('.board').addEventListener("click", this.listener);
-    }
-    else {
-      throw (new Error('Could not add .board eventlistener!'));
-    }
+    this.listener = (event) => {
+      let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
+      let selectedCol = clickedDiv % this.matrix[0].length;
+      // Unused. Keep for unit-testing purposes. This will give the row of a clicked div
+      //let selectedRow = Math.floor(clickedDiv / this.matrix[0].length);
+      //console.log('You clicked position corresponding to this.matrix[' + selectedRow + '][' + selectedCol + ']');
+      //this.matrix[selectedRow][selectedCol] = this.currentPlayer;
+      //this.render();
+      this.makeMove(selectedCol);
+    };
+    $('.board').addEventListener("click", this.listener);
   }
 
 

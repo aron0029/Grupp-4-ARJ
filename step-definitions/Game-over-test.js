@@ -9,6 +9,7 @@ module.exports = function () {
   let realGame;
   let wonIsWhatWhat;
   let overIsCalled = false;
+  let Start;
 
   class FakeGame extends Game {
     over(won) {
@@ -178,11 +179,11 @@ module.exports = function () {
   // Scenario: Play again when game is over
 
   this.When(/^the game is over$/, function () {
-
+    expect(Start).to.be.an.instanceof.over;
   });
 
-  this.Then(/^a button\-element should appear in the css class "([^"]*)" innerHTML\.$/, function (arg1) {
-
+  this.Then(/^a button\-element should appear in the css class "([^"]*)" innerHTML\.$/, function (value) {
+    expect(value).to.be.instanceof.addEventListener;
   });
 
   this.Then(/^the button should have a css class named "([^"]*)"$/, function (arg1) {

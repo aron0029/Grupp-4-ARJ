@@ -31,8 +31,8 @@ module.exports = function () {
 
 
   this.Then(/^in DOM element with css class 'message' change innerHTML content to "([^"]*)" if player is (\d+)$/, function (value, arg2) {
-    expect($('.message').innerHTML).to.be.equal(value); 
-    
+    expect($('.message').innerHTML).to.be.equal(value);
+
   });
 
   // And in DOM element with css class 'message' change innerHTML content to "Röds tur..." if player is 1
@@ -44,4 +44,3 @@ module.exports = function () {
   });
 
 }
- 

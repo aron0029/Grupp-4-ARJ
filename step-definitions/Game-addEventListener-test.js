@@ -1,34 +1,22 @@
+// This requires Game, Board, sleep, $ and $$ as globals
+// (do this in each step-definition file in this project)
 require('./_include-all')();
 require('./_async-helpers.js');
 
 module.exports = function () {
 
+  this.Given(/^an eventlistener listening for click events was added to html div element with class \.message$/, function () {
 
-
-    
-
-
-this.Given(/^that board makeMove called board removeEventListener method$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback(null, 'pending');
-  });
-
-  
-
-  this.Then(/^board removeEventListener should remove eventlistener from div html element with class \.board$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback(null, 'pending');
   });
 
 
-  this.Given(/^the game is over and makeMove called board removeEventListener method$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback(null, 'pending');
+  this.When(/^a click event is raised by any html child element of html div element with class \.message$/, function () {
+
   });
 
 
-  this.Then(/^method will use command  help method  \$ to get the right  element in the DOM$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback(null, 'pending');
+  this.Then(/^eventlistener should call game start method to create an empty new Board$/, function () {
+
   });
+
 }

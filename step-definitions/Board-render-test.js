@@ -247,4 +247,112 @@ module.exports = function () {
 
   });
 
+
+  /* ------------------------------------------------------------------ */
+  /* ---------- Scenario: Render full game board during game ---------- */
+  /* ------------------------------------------------------------------ */
+
+  this.Given(/^upon rendering every position on game board is filled by game pieces$/, function () {
+
+    // Resetting game board in DOM
+    $('.board').innerHTML = '';
+    realGame.board.render();
+
+    realGame.board.matrix = [
+      [2, 1, 2, 1, 2, 1, 2],
+      [2, 1, 2, 1, 2, 1, 2],
+      [2, 1, 2, 1, 2, 1, 2],
+      [1, 2, 1, 2, 1, 2, 1],
+      [1, 2, 1, 2, 1, 2, 1],
+      [1, 2, 1, 2, 1, 2, 1]
+    ];
+
+  });
+
+  this.When(/^render has been called to render full game board$/, function () {
+
+    realGame.board.render();
+
+  });
+
+  this.Then(/^all classes added to full game board divs should exactly correspond to values in board matrix property$/, function () {
+
+    let allDivs = [...$('.board').children];
+
+    // Lets make a 6x7 matrix array of divs instead, yay!
+    let allDivsMatrix = [[], [], [], [], [], []];
+    let divCount = 0;
+    for (let i = 0; i < 6; i++) {
+      for (let n = 0; n < 7; n++) {
+
+        // Why not check for double classes at the same time
+        expect(allDivs[divCount].classList.length).to.be.below(2);
+
+        switch (allDivs[divCount].className) {
+          case 'red': allDivsMatrix[i][n] = 1; break;
+          case 'yellow': allDivsMatrix[i][n] = 2; break;
+          default: allDivsMatrix[i][n] = 0;
+        }
+        divCount++;
+      }
+    }
+
+    expect(allDivsMatrix).to.deep.equal(realGame.board.matrix);
+
+  });
+
+
+  /* ------------------------------------------------------------------------- */
+  /* ---------- Scenario: Render half filled game board during game ---------- */
+  /* ------------------------------------------------------------------------- */
+
+  this.Given(/^upon rendering half of the positions on game board are filled with game pieces$/, function () {
+
+    // Resetting game board in DOM
+    $('.board').innerHTML = '';
+    realGame.board.render();
+
+    realGame.board.matrix = [
+      [0, 0, 0, 0, 0, 0, 2],
+      [0, 0, 0, 0, 0, 2, 1],
+      [0, 0, 0, 0, 1, 2, 1],
+      [0, 0, 0, 1, 2, 1, 2],
+      [0, 0, 2, 1, 2, 1, 2],
+      [0, 2, 1, 2, 1, 2, 1]
+    ];
+
+  });
+
+  this.When(/^render has been called to render half filled game board$/, function () {
+
+    realGame.board.render();
+
+  });
+
+  this.Then(/^all classes added to half filled game board divs should exactly correspond to values in board matrix property$/, function () {
+
+    let allDivs = [...$('.board').children];
+
+    // Lets make a 6x7 matrix array of divs instead, yay!
+    let allDivsMatrix = [[], [], [], [], [], []];
+    let divCount = 0;
+    for (let i = 0; i < 6; i++) {
+      for (let n = 0; n < 7; n++) {
+
+        // Why not check for double classes at the same time
+        expect(allDivs[divCount].classList.length).to.be.below(2);
+
+        switch (allDivs[divCount].className) {
+          case 'red': allDivsMatrix[i][n] = 1; break;
+          case 'yellow': allDivsMatrix[i][n] = 2; break;
+          default: allDivsMatrix[i][n] = 0;
+        }
+        divCount++;
+      }
+    }
+
+    expect(allDivsMatrix).to.deep.equal(realGame.board.matrix);
+
+  });
+
 }

@@ -64,6 +64,14 @@ module.exports = function () {
 
   });
 
+  this.Then(/^these (\d+) div elements including their children should have no CSS classes added to them at this point$/, function (arg1) {
+
+    let allDivs = [...$('.board').children];
+
+    allDivs.map(x => expect(x.classList.length).to.equal(0));
+
+  });
+
 
   /* ---------------------------------------------------------------------------------------------- */
   /* ---------- Scenario: Game should update GUI when valid move is made by red player 1 ---------- */
@@ -118,7 +126,7 @@ module.exports = function () {
     expect($$('.red').length).to.equal(1);
     expect($$('.yellow').length).to.equal(0);
 
-    // Check column
+    // Check that .red div corresponds to column passed to makeMove
     expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column);
 
     // Checking that .red div corresponds to bottom of row in board matrix
@@ -127,36 +135,28 @@ module.exports = function () {
   });
 
 
-  this.Then(/^all previous moves should remain visible including red player 1's and correspond to values in property board matrix array$/, async function () {
+  this.Then(/^all previous moves should remain visible including red players move and correspond to values in property board matrix array$/, async function () {
 
-    // Resetting matrix
-    realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
+    // Making sure yellow player 2 is current
+    realGame.board.currentPlayer = 2;
 
-    // Resetting divs
-    $('.board').innerHTML = '';
-    realGame.board.render();
+    // Dropping a single yellow piece (above previous red piece) in column 3
+    let column = 3;
+    await realGame.board.makeMove(column);
 
-    // Making sure red player 1 is current
-    realGame.board.currentPlayer = 1;
+    // Should be a single .red div and single .yellow div at this point
+    expect($$('.red').length).to.equal(1);
+    expect($$('.yellow').length).to.equal(1);
 
-    // Dropping a single piece in each column and checking corresponding div
-    let players = ['yellow', 'red'];
-    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
+    // Check that .red and .yellow div corresponds to column passed to makeMove
+    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column);
+    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
 
-      await realGame.board.makeMove(i);
+    // Checking that .red div still corresponds to bottom of row in board matrix
+    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 1);
 
-      // Starting at div [index 35]
-      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.currentPlayer - 1]);
-    }
-
-    // Checking divs against board matrix
-    players.reverse();
-    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
-
-      // Starting at div [index 35]
-      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.matrix[5][i] - 1]);
-
-    }
+    // Checking that .yellow div corresponds to second row from bottom in board matrix
+    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 2);
 
   });
 
@@ -198,60 +198,52 @@ module.exports = function () {
     // Resetting matrix
     realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
 
-    // Resetting divs
-    $('.board').innerHTML = '';
-    realGame.board.render();
-
-    // Making sure yellow player 2 is current
-    realGame.board.currentPlayer = 2;
-
-    // Dropping a single yellow piece in column 3
-    let column = 3;
-    await realGame.board.makeMove(column);
-
-    // Should only be a single .yellow div at this point
-    expect($$('.yellow').length).to.equal(1);
-    expect($$('.red').length).to.equal(0);
-
-    // Check column
-    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
-
-    // Checking that .yellow div corresponds to bottom of row in board matrix
-    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1);
-
-  });
-
-
-  this.Then(/^all previous moves should remain visible including yellow player 2's and correspond to values in property board matrix array$/, async function () {
-
-    // Resetting matrix
-    realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
-
-    // Resetting divs
+    // Resetting game board in DOM
     $('.board').innerHTML = '';
     realGame.board.render();
 
     // Making sure red player 1 is current
     realGame.board.currentPlayer = 2;
 
-    // Dropping a single piece in each column and checking corresponding div
-    let players = ['yellow', 'red'];
-    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
+    // Dropping a single red piece in column 3
+    let column = 3;
+    await realGame.board.makeMove(column);
 
-      await realGame.board.makeMove(i);
+    // Should only be a single .red div at this point
+    expect($$('.yellow').length).to.equal(1);
+    expect($$('.red').length).to.equal(0);
 
-      // Starting at div [index 35]
-      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.currentPlayer - 1]);
-    }
+    // Check that .red div corresponds to column passed to makeMove
+    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
 
-    // Checking divs against board matrix
-    players.reverse();
-    for (let i = 0; i < realGame.board.matrix[0].length; i++) {
+    // Checking that .red div corresponds to bottom of row in board matrix
+    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1);
 
-      // Starting at div [index 35]
-      expect([...$('.board').children][35 + i].className).to.equal(players[realGame.board.matrix[5][i] - 1]);
+  });
 
-    }
+
+  this.Then(/^all previous moves should remain visible including yellow players move and correspond to values in property board matrix array$/, async function () {
+
+    // Making sure red player 1 is current
+    realGame.board.currentPlayer = 1;
+
+    // Dropping a single yellow piece (above previous red piece) in column 3
+    let column = 3;
+    await realGame.board.makeMove(column);
+
+    // Should be a single .red div and single .yellow div at this point
+    expect($$('.yellow').length).to.equal(1);
+    expect($$('.red').length).to.equal(1);
+
+    // Check that .red and .yellow div corresponds to column passed to makeMove
+    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
+    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column);
+
+    // Checking that .yellow div still corresponds to bottom of row in board matrix
+    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1);
+
+    // Checking that .red div corresponds to second row from bottom in board matrix
+    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 2);
 
   });
 

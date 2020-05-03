@@ -33,7 +33,9 @@ module.exports = function () {
   /* ----------------------------------------------------------- */
 
   this.Given(/^board playInProgress property is initially false upon valid move$/, function () {
+
     expect(fakeGame.board.playInProgress).to.be.false;
+
   });
 
 
@@ -64,7 +66,9 @@ module.exports = function () {
 
   this.Then(/^board makeMove method should call render (\d+) times for any empty column on game board$/, async function (value) {
 
-    timesRendered = 0;  // Zeroing any previous calls to render
+    // Zeroing any previous calls to render
+    timesRendered = 0;
+
     await fakeGame.board.makeMove(1);
 
     expect(timesRendered).to.equal(+value);
@@ -74,13 +78,15 @@ module.exports = function () {
 
   this.Then(/^board matrix property should end up corresponding to previous board matrix including any player moves$/, function () {
 
-    // Previous step-definition made 2 player moves on empty board at column [0] and [1]
-    // Lets compare current matrix array against manually altered temporary array
-    // Q: Should we instead test boundry values by calling makeMove to fill matrix? Atleast corners/end positions for test-coverage?
     let tempMatrix = JSON.parse(JSON.stringify(initialMatrix));
-    tempMatrix[5][0] = 1;
-    tempMatrix[5][1] = 2;
-    expect(tempMatrix.join()).to.equal(fakeGame.board.matrix.join());
+
+    // Previous step-definition made 2 player moves on empty board at column [0] and [1]
+    tempMatrix[5][0] = 1; // Player 1 Red
+    tempMatrix[5][1] = 2; // Player 2 Yellow
+
+    // Comparing current matrix array against temporary array
+    expect(tempMatrix).to.deep.equal(fakeGame.board.matrix);
+
   });
 
 
@@ -196,16 +202,18 @@ module.exports = function () {
 
   this.When(/^makeMove is passed a column argument that is not of type "([^"]*)" integer with a value between (\d+) and (\d+)$/, function (arg1, arg2, arg3) {
 
-    // Nothing to test here. Move on to next step
+    // Nothing to test here. Move on to next step...
 
   });
 
 
   this.Then(/^makeMove should throw the error "([^"]*)"$/, async function (expectedError) {
 
-    // Testing upper and lower integer boundry
+    // Testing upper and lower integer boundries
     expect(await realGame.board.makeMove(7).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(6).throwCheck).to.not.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
     expect(await realGame.board.makeMove(-1).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    expect(await realGame.board.makeMove(0).throwCheck).to.not.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
 
     // Testing invalid types
     expect(await realGame.board.makeMove('string').throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
@@ -218,18 +226,117 @@ module.exports = function () {
     expect(await realGame.board.makeMove(undefined).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
     expect(await realGame.board.makeMove(null).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
 
-    // Testing invalid floats
-    expect(await realGame.board.makeMove(-1.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+    // Testing floats within boundries
     expect(await realGame.board.makeMove(1.999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
     expect(await realGame.board.makeMove(-1.999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
 
-    // Testing upper boundry with invalid floats
+    // Testing more boundries with floats
     expect(await realGame.board.makeMove(5.999).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
     expect(await realGame.board.makeMove(6.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
-
-    // Testing lower boundry invalid floats
     expect(await realGame.board.makeMove(0.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
     expect(await realGame.board.makeMove(-0.001).throwCheck).to.throw(Error, expectedError, 'Board makeMove is not throwing correct error');
+
+  });
+
+
+  /* ---------------------------------------------------------------- */
+  /* ---------- Scenario: Filling entire board during game ---------- */
+  /* ---------------------------------------------------------------- */
+
+  this.Given(/^no player has won the game$/, function () {
+
+    // Nothing to test. Remember we are not testing winCheck() nor render() in this feature...
+
+  });
+
+  this.When(/^every position on game board is filled by game pieces$/, async function () {
+
+    // Resetting
+    realGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
+
+    // Making sure red player 1 is current
+    realGame.board.currentPlayer = 1;
+
+    let doMoves = [
+      0, 1, 0, 1, 0, 1,
+      1, 0, 1, 0, 1, 0,
+      2, 3, 2, 3, 2, 3,
+      3, 2, 3, 2, 3, 2,
+      4, 5, 4, 5, 4, 5,
+      6, 4, 6, 4, 6, 4,
+      5, 6, 5, 6, 5, 6
+    ]
+
+    for (let doColumn of doMoves) {
+      await realGame.board.makeMove(doColumn);
+    }
+
+    // Fråga Thomas ang arrow func
+    //doMoves.map(async (x) => await realGame.board.makeMove(x));
+
+  });
+
+  this.Then(/^all values in board matrix property placed by makeMove should exactly correspond to every move made during game$/, function () {
+
+    let endMatrix = [
+      [2, 1, 2, 1, 2, 1, 2],
+      [2, 1, 2, 1, 2, 1, 2],
+      [2, 1, 2, 1, 2, 1, 2],
+      [1, 2, 1, 2, 1, 2, 1],
+      [1, 2, 1, 2, 1, 2, 1],
+      [1, 2, 1, 2, 1, 2, 1]
+    ];
+
+    expect(realGame.board.matrix).to.deep.equal(endMatrix);
+
+  });
+
+
+  /* ---------------------------------------------------------------------- */
+  /* ---------- Scenario: Filling half of game board during game ---------- */
+  /* ---------------------------------------------------------------------- */
+
+  this.Given(/^no player has won the game yet$/, function () {
+
+    // Nothing to test. Remember we are not testing winCheck() nor render() in this feature...
+
+  });
+
+  this.When(/^half of the positions on game board are filled by game pieces$/, async function () {
+
+    // Resetting by starting new game
+    realGame = new Game();
+
+    // Making sure yellow player 2 is current
+    realGame.board.currentPlayer = 2;
+
+    let doMoves = [
+      1, 2, 3, 4, 5, 6,
+      2, 3, 4, 5, 6,
+      3, 4, 5, 6,
+      4, 5, 6,
+      5, 6,
+      6
+    ]
+
+    for (let doColumn of doMoves) {
+      await realGame.board.makeMove(doColumn);
+    }
+
+  });
+
+  this.Then(/^all values in board matrix property placed by makeMove should exactly correspond to every move made in the game thus far$/, function () {
+
+    let endMatrix = [
+      [0, 0, 0, 0, 0, 0, 2],
+      [0, 0, 0, 0, 0, 2, 1],
+      [0, 0, 0, 0, 1, 2, 1],
+      [0, 0, 0, 1, 2, 1, 2],
+      [0, 0, 2, 1, 2, 1, 2],
+      [0, 2, 1, 2, 1, 2, 1]
+    ];
+
+    expect(realGame.board.matrix).to.deep.equal(endMatrix);
 
   });
 

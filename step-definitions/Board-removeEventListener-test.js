@@ -18,9 +18,9 @@ module.exports = function () {
 
   let fakeGame = new FakeGame();
 
-  /* ---------------------------------------------------------------------------------------------- */
-  /* ---------- Scenario: When game ha ended and board eventlistener is no longer needed ---------- */
-  /* ---------------------------------------------------------------------------------------------- */
+  /* ----------------------------------------------------------------------------------------------- */
+  /* ---------- Scenario: When game has ended and board eventlistener is no longer needed ---------- */
+  /* ----------------------------------------------------------------------------------------------- */
 
   this.Given(/^that board makeMove called board removeEventListener method$/, async function () {
 

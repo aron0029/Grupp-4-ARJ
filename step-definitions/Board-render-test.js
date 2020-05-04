@@ -252,7 +252,7 @@ module.exports = function () {
   /* ---------- Scenario: Render full game board during game ---------- */
   /* ------------------------------------------------------------------ */
 
-  this.Given(/^upon rendering every position on game board is filled by game pieces$/, function () {
+  this.Given(/^upon rendering that every position on game board is filled by game pieces$/, function () {
 
     // Resetting game board in DOM
     $('.board').innerHTML = '';
@@ -306,7 +306,7 @@ module.exports = function () {
   /* ---------- Scenario: Render half filled game board during game ---------- */
   /* ------------------------------------------------------------------------- */
 
-  this.Given(/^upon rendering half of the positions on game board are filled with game pieces$/, function () {
+  this.Given(/^upon rendering that half of the positions on game board are filled with game pieces$/, function () {
 
     // Resetting game board in DOM
     $('.board').innerHTML = '';

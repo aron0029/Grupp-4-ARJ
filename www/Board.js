@@ -128,11 +128,6 @@ class Board {
     this.listener = (event) => {
       let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
       let selectedCol = clickedDiv % this.matrix[0].length;
-      // Unused. Keep for unit-testing purposes. This will give the row of a clicked div
-      //let selectedRow = Math.floor(clickedDiv / this.matrix[0].length);
-      //console.log('You clicked position corresponding to this.matrix[' + selectedRow + '][' + selectedCol + ']');
-      //this.matrix[selectedRow][selectedCol] = this.currentPlayer;
-      //this.render();
       this.makeMove(selectedCol);
     };
     $('.board').addEventListener("click", this.listener);

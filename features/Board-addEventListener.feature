@@ -2,7 +2,7 @@ Feature: Calling method addEventListener when creating a new instance of Board
   Creating a new Board, we want to call addEventListener for listening click events
 
   Scenario: addEventListener should be called in Board constructor
-    Given a new Board is created
+    When a new Board is created for a new Game
     Then Board constructor should call addEventListener method
 
 # Not testing this...

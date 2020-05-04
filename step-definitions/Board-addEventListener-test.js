@@ -34,7 +34,7 @@ module.exports = function () {
   /* ---------- Scenario: addEventListener should be called in Board constructor ---------- */
   /* -------------------------------------------------------------------------------------- */
 
-  this.When(/^a new Board is created for a new Game$/, function () {
+  this.When(/^new Board is created for a new Game$/, function () {
 
     fakeGameOne = new FakeGameOne();
 
@@ -52,7 +52,7 @@ module.exports = function () {
   /* ---------- Scenario: When game has ended and board eventlistener is no longer needed ---------- */
   /* ----------------------------------------------------------------------------------------------- */
 
-  this.Given(/^a click event is raised by any html child element of html div element with class \.board$/, function () {
+  this.Given(/^click event is raised by any html child element of html div element with class \.board$/, function () {
 
     // Clearing any eventlisteners from previous instances of Game and Board used in other tests
     document.body.removeChild($('.board'));

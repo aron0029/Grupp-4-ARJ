@@ -56,7 +56,7 @@ module.exports = function () {
     );
 
     expect(realGame.playerNames[1]).to.equal('Bertil',
-      'first element in playerNames should contain player twos name'
+      'second element in playerNames should contain player twos name'
     );
 
   });
@@ -69,7 +69,7 @@ module.exports = function () {
 
     fakeGame = new FakeGame();
 
-    expect(startCalled).to.be.true;
+    expect(startCalled, 'method start was not called when creating a new Game').to.be.true;
 
   });
 
@@ -78,14 +78,14 @@ module.exports = function () {
 
     realGame = new Game();
 
-    expect(realGame.board).to.be.instanceof(Board);
+    expect(realGame.board, 'start should set a new instance of Board').to.be.instanceof(Board);
 
   });
 
 
   this.Then(/^game addEventListener method should be called$/, function () {
 
-    expect(addEventListenerCalled).to.be.true;
+    expect(addEventListenerCalled, 'addEventListener was not called when starting a new Game').to.be.true;
 
   });
 
@@ -95,8 +95,8 @@ module.exports = function () {
     // Creating manually since Game start method override in FakeGame
     fakeGame.board = new Board(fakeGame);
 
-    expect(currentPlayer).to.equal(fakeGame.board.currentPlayer);
-    expect(currentPlayer).to.equal(+value);
+    expect(currentPlayer,'currentPlayer should be equal to board.currentPlayer').to.equal(fakeGame.board.currentPlayer);
+    expect(currentPlayer, 'currentPlayer should be 1 when starting a new Game').to.equal(+value);
 
   });
 

@@ -17,6 +17,49 @@ module.exports = function () {
     addEventListener() { addEventListenerCalled = true; }
   }
 
+  /* ------------------------------------------------------------------------------------ */
+  /* ---------- Scenario: Starting the game by creating a new instance of game ---------- */
+  /* ------------------------------------------------------------------------------------ */
+
+  this.When(/^starting a new Game$/, function () {
+
+    // Test further down
+
+  });
+
+  this.Then(/^a prompt should appear to input two names$/, function () {
+
+    let playerNames = ['Anna', 'Bertil'];
+    global.prompt = () => playerNames.shift();
+    realGame = new Game();
+
+  });
+
+  this.Then(/^save the names in property playerNames$/, function () {
+
+    // Test further down
+
+  });
+
+  this.Then(/^the property should have (\d+) elements$/, function (lengthOfPlayerNames) {
+
+    expect(realGame.playerNames.length).to.equal(+lengthOfPlayerNames,
+      'playerNames should contain two elements'
+    );
+
+  });
+
+  this.Then(/^in each element with a players name$/, function () {
+
+    expect(realGame.playerNames[0]).to.equal('Anna',
+      'first element in playerNames should contain player ones name'
+    );
+
+    expect(realGame.playerNames[1]).to.equal('Bertil',
+      'first element in playerNames should contain player twos name'
+    );
+
+  });
 
   /* ------------------------------------------------------------------------------------ */
   /* ---------- Scenario: Starting the game by creating a new instance of game ---------- */

@@ -179,18 +179,30 @@ module.exports = function () {
   // Scenario: Play again when game is over
 
   this.When(/^the game is over$/, function () {
-    expect(Start).to.be.an.instanceof.over;
+    // Test further down
   });
 
-  this.Then(/^a button\-element should appear in the css class "([^"]*)" innerHTML\.$/, function (value) {
-    expect(value).to.be.instanceof.addEventListener;
+  this.Then(/^a button\-element should appear in the css class "([^"]*)" innerHTML\.$/, function (messageClass) {
+
+    expect($$("." + messageClass + " " + "button" + "").length).to.equal(1,
+      "when the game is over, a button element should again in DOM in class message"
+    )
+
   });
 
-  this.Then(/^the button should have a css class named "([^"]*)"$/, function (arg1) {
+  this.Then(/^the button should have a css class named "([^"]*)"$/, function (againClass) {
+
+    expect($$(".message" + " " + "." + againClass + "").length).to.equal(1,
+      "a button with class again should be in the DOM when game is over"
+    )
 
   });
 
-  this.Then(/^with a text "([^"]*)"$/, function (arg1) {
+  this.Then(/^with a text "([^"]*)"$/, function (againMsg) {
+
+    expect($(".message .again").innerHTML).to.equal(againMsg,
+      "a button with class again and with text Spela igen should appear when the game is over"
+    )
 
   });
 

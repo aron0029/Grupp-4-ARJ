@@ -56,7 +56,7 @@ module.exports = function () {
     );
 
     expect(realGame.playerNames[1]).to.equal('Bertil',
-      'first element in playerNames should contain player twos name'
+      'second element in playerNames should contain player twos name'
     );
 
   });

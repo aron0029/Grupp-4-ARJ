@@ -17,7 +17,7 @@ module.exports = function () {
   }
 
   class FakeBoard extends Board {
-    constructor(game) {
+    constructor (game) {
       fakeBoardGame = game;
       super(game);
     }
@@ -30,7 +30,7 @@ module.exports = function () {
 
   this.Given(/^that the method start\(\) is called$/, function () {
 
-    expect(startCalled).to.be.true;
+    expect(startCalled, 'method Start was not called').to.be.true;
 
   });
 
@@ -38,7 +38,7 @@ module.exports = function () {
 
   this.Then(/^it should create an instance of Board$/, function () {
 
-    expect(realGame.board).to.be.instanceof(Board);
+    expect(realGame.board, 'Start dident crate an instance of Board').to.be.instanceof(Board);
 
   });
 
@@ -46,8 +46,9 @@ module.exports = function () {
 
   this.Then(/^pass current instance of Game to Boards constructor$/, function () {
 
+
     // Testing "send" (passing argument) using a fake Game
-    expect(fakeGame).to.deep.equal(fakeBoardGame);
+    expect(fakeGame, 'current instance of game was met sent to Board Construktor').to.deep.equal(fakeBoardGame);
 
   });
 

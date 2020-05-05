@@ -12,5 +12,5 @@ Feature: Two player game
     Then the content of html div element with css class .message should be changed to player 2's entered name + "s tur..."
 
   Scenario: Wrong player value is passed to tellTurn by Board class
-    When tellTurn method is called and passed a value which is not 1 or 2
+    When tellTurn method is called and passed a value which is not a "number" of 1 or 2
     Then tellTurn method should throw error "player must be 1 or 2"

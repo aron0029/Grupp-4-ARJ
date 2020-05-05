@@ -20,15 +20,15 @@ module.exports = function () {
   /* ---------- Scenario: Showing player 1 is next ---------- */
   /* -------------------------------------------------------- */
 
-  this.Given(/^tellTurn method is called$/, function (callback) {
+  this.Given(/^tellTurn method is called$/, function () {
 
   });
 
-  this.Given(/^and was passed an argument "([^"]*)" value of (\d+)$/, function (arg1, arg2, callback) {
+  this.Given(/^and was passed an argument "([^"]*)" value of (\d+)$/, function (arg1, arg2) {
 
   });
 
-  this.Then(/^the content of html div element with css class \.message should be changed to player (\d+)'s entered name \+ "([^"]*)"$/, function (arg1, arg2, callback) {
+  this.Then(/^the content of html div element with css class \.message should be changed to player (\d+)'s entered name \+ "([^"]*)"$/, function (arg1, arg2) {
 
   });
 
@@ -37,15 +37,15 @@ module.exports = function () {
   /* ---------- Scenario: Showing player 2 is next ---------- */
   /* -------------------------------------------------------- */
 
-  this.Given(/^tellTurn method is called$/, function (callback) {
+  this.Given(/^tellTurn method is called$/, function () {
 
   });
 
-  this.Given(/^and was passed an argument "([^"]*)" value of (\d+)$/, function (arg1, arg2, callback) {
+  this.Given(/^and was passed an argument "([^"]*)" value of (\d+)$/, function (arg1, arg2) {
 
   });
 
-  this.Then(/^the content of html div element with css class \.message should be changed to player (\d+)'s entered name \+ "([^"]*)"$/, function (arg1, arg2, callback) {
+  this.Then(/^the content of html div element with css class \.message should be changed to player (\d+)'s entered name \+ "([^"]*)"$/, function (arg1, arg2) {
 
   });
 
@@ -54,11 +54,11 @@ module.exports = function () {
   /* ----------  Scenario: Wrong player value is passed to tellTurn by Board class ---------- */
   /* ---------------------------------------------------------------------------------------- */
 
-  this.When(/^tellTurn method is called and passed a value which is not (\d+) or (\d+)$/, function (arg1, arg2, callback) {
+  this.When(/^tellTurn method is called and passed a value which is not a "([^"]*)" of (\d+) or (\d+)$/, function (arg1, arg2, arg3) {
 
   });
 
-  this.Then(/^tellTurn method should throw error "([^"]*)"$/, function (arg1, callback) {
+  this.Then(/^tellTurn method should throw error "([^"]*)"$/, function (arg1) {
 
   });
 

@@ -9,7 +9,6 @@ module.exports = function () {
   let realGame;
   let wonIsWhatWhat;
   let overIsCalled = false;
-  let Start;
 
   class FakeGame extends Game {
     over(won) {

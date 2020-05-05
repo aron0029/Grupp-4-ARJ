@@ -4,19 +4,27 @@ require('./_async-helpers.js');
 module.exports = function () {
   this.After(() => fixNoSuchWindowError(driver));
 
-
-  let board;
   let fakeGame;
   let realGame;
-  let winCheck;
   let startCalled = false;
+  let fakeBoardGame;
 
   class FakeGame extends Game {
-    start() { startCalled = true; }
+    start() {
+      this.board = new FakeBoard(this);
+      startCalled = true;
+    }
+  }
+
+  class FakeBoard extends Board {
+    constructor(game) {
+      fakeBoardGame = game;
+      super(game);
+    }
+
   }
 
   fakeGame = new FakeGame();
-
   realGame = new Game();
 
 
@@ -25,7 +33,6 @@ module.exports = function () {
     expect(startCalled).to.be.true;
 
   });
-
 
 
 
@@ -39,14 +46,17 @@ module.exports = function () {
 
   this.Then(/^send current instance of Game to Boards constructor$/, function () {
 
-    expect(realGame).to.deep.equal(realGame.board.game);
+    // Testing "send" (passing argument) using a fake Game
+    expect(fakeGame).to.deep.equal(fakeBoardGame);
 
   });
 
 
   this.Then(/^save the instance in property "([^"]*)"\.$/, function (value) {
 
-    // Untestable?
+    // Save the instance of "Game" in property board? 
+    // Testing this using a real Game
+    expect(realGame).to.deep.equal(realGame.board.game);
 
   });
 

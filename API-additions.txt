@@ -6,7 +6,7 @@ Game
 
   tellTurn()
 
-    Metoden ska ta tag i DOM-elementet med css-klassen message och byta dess innehåll till Spelare 1's namn + “ tur…” om player har värdet 1 och till Spelare 2's namn + “ tur…” om player har värdet 2.
+    Metoden ska ta tag i DOM-elementet med css-klassen message och byta dess innehåll till Spelare 1's namn + “s tur…” om player har värdet 1 och till Spelare 2's namn + “s tur…” om player har värdet 2.
 
   over(won)
 

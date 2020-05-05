@@ -44,7 +44,7 @@ module.exports = function () {
 
 
 
-  this.Then(/^send current instance of Game to Boards constructor$/, function () {
+  this.Then(/^pass current instance of Game to Boards constructor$/, function () {
 
     // Testing "send" (passing argument) using a fake Game
     expect(fakeGame).to.deep.equal(fakeBoardGame);
@@ -52,7 +52,7 @@ module.exports = function () {
   });
 
 
-  this.Then(/^save the instance in property "([^"]*)"\.$/, function (value) {
+  this.Then(/^save the instance in property "([^"]*)"$/, function (value) {
 
     // Save the instance of "Game" in property board? 
     // Testing this using a real Game

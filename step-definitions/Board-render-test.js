@@ -30,14 +30,14 @@ module.exports = function () {
 
   this.Given(/^that board render method is called by board constructor when running the game$/, function () {
 
-    expect(renderCalled).to.be.true;
+    expect(renderCalled, 'render was not called running the game').to.be.true;
 
   });
 
 
   this.Given(/^that html div element with class \.board exists when board render method is called when running the game$/, function () {
 
-    expect($('.board')).to.not.be.null;
+    expect($('.board'), 'html div element with class .board is missing').to.not.be.null;
 
   });
 
@@ -56,11 +56,11 @@ module.exports = function () {
 
     // .board div must have exactly 42 children that are divs
     allDivs.map(x => x.localName === 'div' ? parentDivs.push(x) : '');
-    expect(parentDivs.length).to.equal(+value);
+    expect(parentDivs.length).to.equal(+value, 'render did not create html div parent elements correctly');
 
     // Each of 42 parents must have exactly 1 child that is div
     parentDivs.map(x => x.children.length === 1 && x.firstChild.localName === 'div' ? childDivs.push(x.firstChild) : '');
-    expect(childDivs.length).to.equal(+value);
+    expect(childDivs.length).to.equal(+value, 'render did not create html div child elements correctly');
 
   });
 
@@ -68,7 +68,7 @@ module.exports = function () {
 
     let allDivs = [...$('.board').children];
 
-    allDivs.map(x => expect(x.classList.length).to.equal(0));
+    allDivs.map(x => expect(x.classList.length).to.equal(0, 'html div element should not have any classes added'));
 
   });
 
@@ -79,7 +79,7 @@ module.exports = function () {
 
   this.Given(/^that html div element with class \.board exists when board render method is called when red player (\d+) makes a move$/, function (arg1) {
 
-    expect($('.board')).to.not.be.null;
+    expect($('.board'), 'html div element with class .board is missing').to.not.be.null;
 
   });
 
@@ -93,7 +93,7 @@ module.exports = function () {
 
     await fakeGame.board.makeMove(0);
 
-    expect(renderCalled).to.be.true;
+    expect(renderCalled, 'render was not called during move').to.be.true;
 
   });
 
@@ -101,7 +101,7 @@ module.exports = function () {
   this.When(/^board currentPlayer property value was (\d+) on move by red player$/, function (value) {
 
     // Last player from previous step-definition
-    expect(lastPlayer).to.equal(+value);
+    expect(lastPlayer).to.equal(+value, 'move should be made by red player 1');
 
   });
 
@@ -123,14 +123,16 @@ module.exports = function () {
     await realGame.board.makeMove(column);
 
     // Should only be a single .red div at this point
-    expect($$('.red').length).to.equal(1);
-    expect($$('.yellow').length).to.equal(0);
+    expect($$('.red').length).to.equal(1, 'wrong number of game pieces rendered in GUI');
+    expect($$('.yellow').length).to.equal(0, 'wrong number of game pieces rendered in GUI');
 
     // Check that .red div corresponds to column passed to makeMove
-    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column);
+    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column,
+      'wrong placement of game pieces rendered in GUI');
 
     // Checking that .red div corresponds to bottom of row in board matrix
-    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 1);
+    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 1,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
   });
 
@@ -145,18 +147,22 @@ module.exports = function () {
     await realGame.board.makeMove(column);
 
     // Should be a single .red div and single .yellow div at this point
-    expect($$('.red').length).to.equal(1);
-    expect($$('.yellow').length).to.equal(1);
+    expect($$('.red').length).to.equal(1, 'wrong number of game pieces rendered in GUI');
+    expect($$('.yellow').length).to.equal(1, 'wrong number of game pieces rendered in GUI');
 
     // Check that .red and .yellow div corresponds to column passed to makeMove
-    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column);
-    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
+    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column,
+      'wrong placement of game pieces rendered in GUI');
+    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column,
+      'wrong placement of game pieces rendered in GUI');
 
     // Checking that .red div still corresponds to bottom of row in board matrix
-    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 1);
+    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 1,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
     // Checking that .yellow div corresponds to second row from bottom in board matrix
-    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 2);
+    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 2,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
   });
 
@@ -167,7 +173,7 @@ module.exports = function () {
 
   this.Given(/^that html div element with class \.board exists when board render method is called when yellow player (\d+) makes a move$/, function (arg1) {
 
-    expect($('.board')).to.not.be.null;
+    expect($('.board'), 'html div element with class .board is missing').to.not.be.null;
 
   });
 
@@ -181,14 +187,14 @@ module.exports = function () {
 
     await fakeGame.board.makeMove(0);
 
-    expect(renderCalled).to.be.true;
+    expect(renderCalled, 'render was not called during move').to.be.true;
 
   });
 
   this.When(/^board currentPlayer property value was (\d+) on move by yellow player$/, function (value) {
 
     // Last player from previous step-definition
-    expect(lastPlayer).to.equal(+value);
+    expect(lastPlayer).to.equal(+value, 'move should be made by yellow player 2');
 
   });
 
@@ -210,14 +216,16 @@ module.exports = function () {
     await realGame.board.makeMove(column);
 
     // Should only be a single .red div at this point
-    expect($$('.yellow').length).to.equal(1);
-    expect($$('.red').length).to.equal(0);
+    expect($$('.yellow').length).to.equal(1, 'wrong number of game pieces rendered in GUI');
+    expect($$('.red').length).to.equal(0, 'wrong number of game pieces rendered in GUI');
 
     // Check that .red div corresponds to column passed to makeMove
-    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
+    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column,
+      'wrong placement of game pieces rendered in GUI');
 
     // Checking that .red div corresponds to bottom of row in board matrix
-    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1);
+    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
   });
 
@@ -232,18 +240,22 @@ module.exports = function () {
     await realGame.board.makeMove(column);
 
     // Should be a single .red div and single .yellow div at this point
-    expect($$('.yellow').length).to.equal(1);
-    expect($$('.red').length).to.equal(1);
+    expect($$('.yellow').length).to.equal(1, 'wrong number of game pieces rendered in GUI');
+    expect($$('.red').length).to.equal(1, 'wrong number of game pieces rendered in GUI');
 
     // Check that .red and .yellow div corresponds to column passed to makeMove
-    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column);
-    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column);
+    expect([...$('.board').children].indexOf($('.yellow')) % 7).to.equal(column,
+      'wrong placement of game pieces rendered in GUI');
+    expect([...$('.board').children].indexOf($('.red')) % 7).to.equal(column,
+      'wrong placement of game pieces rendered in GUI');
 
     // Checking that .yellow div still corresponds to bottom of row in board matrix
-    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1);
+    expect(Math.floor([...$('.board').children].indexOf($('.yellow')) / 7)).to.equal(realGame.board.matrix.length - 1,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
     // Checking that .red div corresponds to second row from bottom in board matrix
-    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 2);
+    expect(Math.floor([...$('.board').children].indexOf($('.red')) / 7)).to.equal(realGame.board.matrix.length - 2,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
   });
 
@@ -253,6 +265,8 @@ module.exports = function () {
   /* ------------------------------------------------------------------ */
 
   this.Given(/^upon rendering that every position on game board is filled by game pieces$/, function () {
+
+    // Precondition nothing to test here...
 
     // Resetting game board in DOM
     $('.board').innerHTML = '';
@@ -270,6 +284,8 @@ module.exports = function () {
   });
 
   this.When(/^render has been called to render full game board$/, function () {
+
+    // Precondition nothing to test here...
 
     realGame.board.render();
 
@@ -297,7 +313,8 @@ module.exports = function () {
       }
     }
 
-    expect(allDivsMatrix).to.deep.equal(realGame.board.matrix);
+    expect(allDivsMatrix).to.deep.equal(realGame.board.matrix,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
   });
 
@@ -307,6 +324,8 @@ module.exports = function () {
   /* ------------------------------------------------------------------------- */
 
   this.Given(/^upon rendering that half of the positions on game board are filled with game pieces$/, function () {
+
+    // Precondition nothing to test here...
 
     // Resetting game board in DOM
     $('.board').innerHTML = '';
@@ -324,6 +343,8 @@ module.exports = function () {
   });
 
   this.When(/^render has been called to render half filled game board$/, function () {
+
+    // Precondition nothing to test here...
 
     realGame.board.render();
 
@@ -351,7 +372,8 @@ module.exports = function () {
       }
     }
 
-    expect(allDivsMatrix).to.deep.equal(realGame.board.matrix);
+    expect(allDivsMatrix).to.deep.equal(realGame.board.matrix,
+      'placement of game pieces rendered in GUI does not match board matrix array');
 
   });
 

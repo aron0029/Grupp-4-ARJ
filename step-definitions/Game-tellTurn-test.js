@@ -28,7 +28,7 @@ module.exports = function () {
     tellTurnCalled = false;
     fakeGame = new FakeGame();
 
-    expect(tellTurnCalled).to.be.true;
+    expect(tellTurnCalled, 'tellTurn was not called on game start').to.be.true;
 
 
     // Making sure player 2 is current
@@ -36,15 +36,15 @@ module.exports = function () {
     tellTurnCalled = false;
     await fakeGame.board.makeMove(0);
 
-    expect(tellTurnCalled).to.be.true;
+    expect(tellTurnCalled, 'tellTurn was not called during move').to.be.true;
 
   });
 
   this.Given(/^and was passed player argument "([^"]*)" value of (\d+) to show first player is next$/, function (arg1, arg2) {
 
-    expect(tellTurnplayer).to.be.a('number');
-    expect(Number.isInteger(tellTurnplayer)).to.be.true;
-    expect(tellTurnplayer).to.equal(1);
+    expect(tellTurnplayer).to.be.a('number', 'wrong type passed to tellTurn as argument');
+    expect(Number.isInteger(tellTurnplayer), 'wrong value passed to tellTurn as argument').to.be.true;
+    expect(tellTurnplayer).to.equal(1, 'wrong value passed to tellTurn as argument');
 
   });
 
@@ -59,7 +59,7 @@ module.exports = function () {
 
     realGame = new Game();
 
-    expect($('.message').innerHTML).to.equal(playerOneName + value);
+    expect($('.message').innerHTML).to.equal(playerOneName + value, 'GUI message was not updated correctly');
 
   });
 
@@ -70,26 +70,20 @@ module.exports = function () {
 
   this.Given(/^tellTurn method is called after move by first player (\d+)$/, async function (arg1) {
 
-    tellTurnCalled = false;
-    fakeGame = new FakeGame();
-
-    expect(tellTurnCalled).to.be.true;
-
-
     // Making sure player 1 is current
     fakeGame.board.currentPlayer = 1;
     tellTurnCalled = false;
     await fakeGame.board.makeMove(0);
 
-    expect(tellTurnCalled).to.be.true;
+    expect(tellTurnCalled, 'tellTurn was not called during move').to.be.true;
 
   });
 
   this.Given(/^and was passed player argument "([^"]*)" value of (\d+) to show second player is next$/, function (arg1, arg2) {
 
-    expect(tellTurnplayer).to.be.a('number');
-    expect(Number.isInteger(tellTurnplayer)).to.be.true;
-    expect(tellTurnplayer).to.equal(2);
+    expect(tellTurnplayer).to.be.a('number', 'wrong type passed to tellTurn as argument');
+    expect(Number.isInteger(tellTurnplayer), 'wrong value passed to tellTurn as argument').to.be.true;
+    expect(tellTurnplayer).to.equal(2, 'wrong value passed to tellTurn as argument');
 
   });
 
@@ -105,7 +99,7 @@ module.exports = function () {
     // Make sure current player 2
     await realGame.board.makeMove(0);
 
-    expect($('.message').innerHTML).to.equal(playerTwoName + value);
+    expect($('.message').innerHTML).to.equal(playerTwoName + value, 'GUI message was not updated correctly');
 
   });
 
@@ -116,6 +110,8 @@ module.exports = function () {
 
   this.When(/^tellTurn method is called and passed a value which is not a "([^"]*)" of (\d+) or (\d+)$/, function (arg1, arg2, arg3) {
 
+    // Preconditions nothing to test here...
+
     realGame = new Game();
 
     throwTestArray = [
@@ -123,7 +119,7 @@ module.exports = function () {
       []
     ];
 
-    // How too without any real purpose split up a test into two step-definitions :-)
+    // How too "without any real purpose" split up a test into two step-definitions :-)
     for (let element of throwTestArray[0]) {
       try {
         realGame.tellTurn(element);
@@ -136,10 +132,10 @@ module.exports = function () {
 
   this.Then(/^tellTurn method should throw error "([^"]*)"$/, function (expectedError) {
 
-    // How too without any real purpose split up a test into two step-definitions :-)
+    // How too "without any real purpose" split up a test into two step-definitions :-)
     for (let element of throwTestArray[1]) {
-      expect(element).to.be.instanceof(Error);
-      expect(element.message).to.equal(expectedError);
+      expect(element).to.be.instanceof(Error, 'wrong type thrown by tellTurn');
+      expect(element.message).to.equal(expectedError, 'wrong Error thrown by tellTurn ');
     }
 
   });

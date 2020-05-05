@@ -34,7 +34,7 @@ module.exports = function () {
 
   this.Given(/^board playInProgress property is initially false upon valid move$/, function () {
 
-    expect(fakeGame.board.playInProgress).to.be.false;
+    expect(fakeGame.board.playInProgress, 'playInProgress property should be false unless makeMove is running').to.be.false;
 
   });
 
@@ -51,7 +51,7 @@ module.exports = function () {
       timer++;
     }
 
-    expect(fakeGame.board.playInProgress).to.be.true;
+    expect(fakeGame.board.playInProgress, 'makeMove should be running').to.be.true;
 
     // Await board makeMove to set playInProgress false
     timer = 0;
@@ -71,7 +71,7 @@ module.exports = function () {
 
     await fakeGame.board.makeMove(1);
 
-    expect(timesRendered).to.equal(+value);
+    expect(timesRendered).to.equal(+value, 'render was not called correct number of time by makeMove during a move');
 
   });
 
@@ -85,30 +85,30 @@ module.exports = function () {
     tempMatrix[5][1] = 2; // Player 2 Yellow
 
     // Comparing current matrix array against temporary array
-    expect(tempMatrix).to.deep.equal(fakeGame.board.matrix);
+    expect(tempMatrix).to.deep.equal(fakeGame.board.matrix, 'makeMove did not update matrix array correctly');
 
   });
 
 
   this.Then(/^board winCheck method be called to check for a 4-in-a-row win$/, function () {
 
-    expect(winCheckCalled).to.be.true;
+    expect(winCheckCalled, 'winCheck was not called').to.be.true;
 
   });
 
 
   this.Then(/^board currentPlayer property be set to type "([^"]*)" of value 1 or 2 whichever is the next player in turn$/, function (value) {
 
-    // Should be all numbers and next (current) player should not be previous player 
     tellTurnPlayer.map(x => {
-      expect(x).to.be.a(value);
-      expect(Number.isInteger(x)).to.be.true;
+      expect(x).to.be.a(value, 'currentPlayer property passed to game.tellTurn should be of type number');
+      expect(Number.isInteger(x, 'currentPlayer property passed to game.tellTurn should be an integer')).to.be.true;
     });
 
-    expect(tellTurnPlayer[tellTurnPlayer.length - 1]).to.not.equal(tellTurnPlayer[tellTurnPlayer.length - 2]);
+    expect(tellTurnPlayer[tellTurnPlayer.length - 1]).to.not.equal(tellTurnPlayer[tellTurnPlayer.length - 2],
+      'currentPlayer property should not equal previous player');
 
-    // Lets also check that (current) player is a number and the player is "prior to previous" player
-    expect(fakeGame.board.currentPlayer).to.be.a(value).and.equal(tellTurnPlayer[tellTurnPlayer.length - 3]);
+    expect(fakeGame.board.currentPlayer).to.be.a(value).and.equal(tellTurnPlayer[tellTurnPlayer.length - 3],
+      'currentPlayer property should be type number and should equal player prior to previous player');
 
   });
 
@@ -116,16 +116,17 @@ module.exports = function () {
   this.Then(/^game tellTurn method be called with board currentPlayer as argument$/, function () {
 
     // game tellTurn should have been called 3 times including board constructor call at this point of scenario
-    expect(tellTurnPlayer.length).to.equal(3);
+    expect(tellTurnPlayer.length).to.equal(3, 'game.tellTurn was not called correct number of times');
 
-    expect(tellTurnPlayer[tellTurnPlayer.length - 1]).to.equal(fakeGame.board.currentPlayer);
+    expect(tellTurnPlayer[tellTurnPlayer.length - 1]).to.equal(fakeGame.board.currentPlayer,
+      'currentPlayer property was not set correctly');
 
   });
 
 
   this.Then(/^board makeMove method should return true$/, async function () {
 
-    expect(await fakeGame.board.makeMove(0)).to.be.true;
+    expect(await fakeGame.board.makeMove(0), 'makeMove did not return true on valid move').to.be.true;
 
   });
 
@@ -134,7 +135,7 @@ module.exports = function () {
 
     // This step-definition should preseed previous step 
     // But since we already know makeMove sets playInProgress true upon method call we need only check that its false when finished
-    expect(fakeGame.board.playInProgress).to.be.false;
+    expect(fakeGame.board.playInProgress, 'playInProgress should be false on return').to.be.false;
 
   });
 
@@ -145,7 +146,7 @@ module.exports = function () {
 
   this.Given(/^board playInProgress property is initially false upon invalid move$/, function () {
 
-    expect(fakeGame.board.playInProgress).to.be.false;
+    expect(fakeGame.board.playInProgress, 'playInProgress property should be false unless makeMove is running').to.be.false;
 
   });
 
@@ -164,7 +165,7 @@ module.exports = function () {
     // Check that board makeMove filled board matrix
     for (i = 0; i < fakeGame.board.matrix[0].length; i++) {  // Columns
       for (n = 0; n < fakeGame.board.matrix.length; n++) {    // Rows
-        expect(fakeGame.board.matrix[n][i]).to.not.equal(0);
+        expect(fakeGame.board.matrix[n][i]).to.not.equal(0, 'matrix array element was not set correctly during move');
       }
     }
 
@@ -174,7 +175,7 @@ module.exports = function () {
   this.Then(/^board makeMove method should return false$/, async function () {
 
     for (i = 0; i < fakeGame.board.matrix[0].length; i++) {  // Columns
-      expect(await fakeGame.board.makeMove(i)).to.be.false;
+      expect(await fakeGame.board.makeMove(i), 'wrong return value given making an invalid move').to.be.false;
     }
 
   });
@@ -184,7 +185,7 @@ module.exports = function () {
 
     // This step-definition should preseed previous step 
     // But since we already know makeMove sets playInProgress true upon method call we need only check that its false when finished
-    expect(fakeGame.board.playInProgress).to.be.false;
+    expect(fakeGame.board.playInProgress, 'playInProgress should be false on return').to.be.false;
 
   });
 
@@ -195,7 +196,7 @@ module.exports = function () {
 
   this.Given(/^board playInProgress property is initially false upon any move$/, function () {
 
-    expect(realGame.board.playInProgress).to.be.false;
+    expect(realGame.board.playInProgress, 'playInProgress property should be false unless makeMove is running').to.be.false;
 
   });
 
@@ -245,7 +246,7 @@ module.exports = function () {
 
   this.Given(/^no player has won the game$/, function () {
 
-    // Nothing to test. Remember we are not testing winCheck() nor render() in this feature...
+    // Nothing to test. Remember we are not testing winCheck() or render() in this feature...
 
   });
 
@@ -271,8 +272,9 @@ module.exports = function () {
       await realGame.board.makeMove(doColumn);
     }
 
-    // Fråga Thomas ang arrow func
-    //doMoves.map(async (x) => await realGame.board.makeMove(x));
+    for (let element of realGame.board.matrix.flat(1)) {
+      expect(element).to.not.equal(0, 'matrix array property was not filled');
+    }
 
   });
 
@@ -287,7 +289,7 @@ module.exports = function () {
       [1, 2, 1, 2, 1, 2, 1]
     ];
 
-    expect(realGame.board.matrix).to.deep.equal(endMatrix);
+    expect(realGame.board.matrix).to.deep.equal(endMatrix, 'matrix array property was not updated correctly during moves');
 
   });
 
@@ -323,6 +325,13 @@ module.exports = function () {
       await realGame.board.makeMove(doColumn);
     }
 
+    let count = 0;
+    for (let element of realGame.board.matrix.flat(1)) {
+      element === 0 ? count++ : '';
+    }
+
+    expect(count).to.equal(21, 'matrix array property was not half filled');
+
   });
 
   this.Then(/^all values in board matrix property placed by makeMove should exactly correspond to every move made in the game thus far$/, function () {
@@ -336,7 +345,7 @@ module.exports = function () {
       [0, 2, 1, 2, 1, 2, 1]
     ];
 
-    expect(realGame.board.matrix).to.deep.equal(endMatrix);
+    expect(realGame.board.matrix).to.deep.equal(endMatrix, 'matrix array property was not updated correctly during moves');
 
   });
 

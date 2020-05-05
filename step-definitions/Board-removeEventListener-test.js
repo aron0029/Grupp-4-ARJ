@@ -31,7 +31,7 @@ module.exports = function () {
     // Making a winning move
     await fakeGame.board.makeMove(0);
 
-    expect(removeEventListenerCalled).to.be.true;
+    expect(removeEventListenerCalled, 'removeEventListener was not called').to.be.true;
 
   });
 
@@ -61,7 +61,8 @@ module.exports = function () {
     }
 
     // We expect eventlistener to have called makeMove(0)
-    expect($$('.red').length).to.equal(1);
+    expect($$('.red').length).to.equal(1,
+      'game board GUI did not update on click');
 
     // Filling 2 more game pieces
     realGame.board.matrix[4][0] = 1;
@@ -88,7 +89,8 @@ module.exports = function () {
     }
 
     // Checking that eventlistener never called makeMove(0)
-    expect($$('.yellow').length).to.equal(0);
+    expect($$('.yellow').length).to.equal(0,
+      'eventlistener was not removed correctly');
 
   });
 

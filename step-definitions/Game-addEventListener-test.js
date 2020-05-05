@@ -47,7 +47,7 @@ module.exports = function () {
 
     // Check if start was called a second time
     $('.again').click();
-    expect(startTimesCalled).to.equal(2);
+    expect(startTimesCalled).to.equal(2, 'start was not called when clicking play again button');
 
   });
 
@@ -74,10 +74,10 @@ module.exports = function () {
     $('.again').click();
 
     // Checking for new instance
-    expect(oldBoard).to.not.deep.equal(fakeGameTwo.board);
+    expect(oldBoard).to.not.deep.equal(fakeGameTwo.board, 'new instance of Board was not created');
 
     // Also Checking that new board rendered an empty board using its own matrix
-    expect($$('.red').length).to.equal(0);
+    expect($$('.red').length).to.equal(0, 'an empty board was not rendered');
 
   });
 

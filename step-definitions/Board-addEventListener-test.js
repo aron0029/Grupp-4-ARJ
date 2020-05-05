@@ -36,12 +36,14 @@ module.exports = function () {
 
   this.When(/^new Board is created for a new Game$/, function () {
 
-    fakeGameOne = new FakeGameOne();
+    // Nothing to test here
 
   });
 
 
   this.Then(/^Board constructor should call addEventListener method$/, function () {
+
+    fakeGameOne = new FakeGameOne();
 
     expect(addEventListenerWasCalled, 'addEventListener was not called by Board constructor').to.be.true;
 
@@ -65,7 +67,7 @@ module.exports = function () {
 
     // Testing a single click
     $('.board').firstChild.click();
-    expect(columnInput).to.equal(0);
+    expect(columnInput).to.equal(0, 'wrong argument value passed by board eventlistener function on click');
 
   });
 
@@ -81,14 +83,14 @@ module.exports = function () {
         allDivs[i + n].click();
 
         // Checking value
-        expect(columnInput).to.equal(i);
+        expect(columnInput).to.equal(i, 'wrong argument value passed by board eventlistener function on click');
 
         // For the sake of testing
-        expect(typeof columnInput).to.equal(value1);
-        expect(Number.isInteger(columnInput)).to.be.true;
+        expect(typeof columnInput).to.equal(value1, 'wrong argument type passed by board eventlistener function on click');
+        expect(Number.isInteger(columnInput), 'wrong argument value passed by board eventlistener function on click').to.be.true;
 
         // Since we tested its an integer
-        expect(columnInput).to.be.at.least(value2).and.at.most(value3);
+        expect(columnInput, 'wrong argument value passed by board eventlistener function on click').to.be.at.least(value2).and.at.most(value3);
       }
     }
 

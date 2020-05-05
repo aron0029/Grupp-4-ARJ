@@ -2,13 +2,13 @@ Feature: Two player game
   We want the GUI to show which players turn it is
 
   Scenario: Showing player 1 is next
-    Given tellTurn method is called on game start or after move by second player 2
-    And and was passed argument "player" value of 1 to show first player is next
+    Given tellTurn method is called after move by second player 2 or on game start
+    And and was passed player argument "number" value of 1 to show first player is next
     Then the content of html div element with css class .message should be changed to first player 1's entered name + "s tur..."
 
   Scenario: Showing player 2 is next
-    Given tellTurn method is called on game start or after move by first player 1
-    And and was passed argument "player" value of 2 to show second player is next
+    Given tellTurn method is called after move by first player 1
+    And and was passed player argument "number" value of 2 to show second player is next
     Then the content of html div element with css class .message should be changed to second player 2's entered name + "s tur..."
 
   Scenario: Wrong player value is passed to tellTurn by Board class

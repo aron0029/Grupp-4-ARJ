@@ -1,9 +1,16 @@
-Feature: Tell which player's turn
-  We want to tell which player's turn it is now on the DOM
+Feature: Two player game
+  We want the GUI to show which players turn it is
 
-  Scenario: Telling which player's turn
-    When tellTurn method is called
-    Then argument "player" should be either 1 or 2
-    And if "player" is not 1 or 2, it should throw error "player must be 1 or 2"
-    And in DOM element with css class 'message' change innerHTML content to "Röds tur..." if player is 1
-    And change innerHTML content to "Guls tur..." if player is 2
+  Scenario: Showing player 1 is next
+    Given tellTurn method is called after move by second player 2 or on game start
+    And and was passed player argument "number" value of 1 to show first player is next
+    Then the content of html div element with css class .message should be changed to first player 1's entered name + "s tur..."
+
+  Scenario: Showing player 2 is next
+    Given tellTurn method is called after move by first player 1
+    And and was passed player argument "number" value of 2 to show second player is next
+    Then the content of html div element with css class .message should be changed to second player 2's entered name + "s tur..."
+
+  Scenario: Wrong player value is passed to tellTurn by Board class
+    When tellTurn method is called and passed a value which is not a "number" of 1 or 2
+    Then tellTurn method should throw error "player must be 1 or 2"

@@ -57,7 +57,7 @@ module.exports = function () {
 
     // Save the instance of "Game" in property board? 
     // Testing this using a real Game
-    expect(realGame).to.deep.equal(realGame.board.game);
+    expect(realGame, 'game.start is not an instance of game').to.deep.equal(realGame.board.game);
 
   });
 

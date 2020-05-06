@@ -19,8 +19,8 @@ class Board {
 
 
   async makeMove(column) {
-    if (this.playInProgress) return null;
-    if (!Number.isInteger(column) || column > 6 || column < 0) throw (new Error('column must be an integer between 0 and 6'));
+    if (this.playInProgress) { return null };
+    if (!Number.isInteger(column) || column > 6 || column < 0) { throw (new Error('column must be an integer between 0 and 6')); }
 
     // Prevent a move when makeMove() is running
     this.playInProgress = true;
@@ -125,18 +125,13 @@ class Board {
 
 
   addEventListener() {
-    if ($('.board')) {
-      this.listener = (event) => {
-        let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
-        let selectedCol = clickedDiv % this.matrix[0].length;
+    this.listener = (event) => {
+      let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
+      let selectedCol = clickedDiv % this.matrix[0].length;
 
-        this.makeMove(selectedCol);
-      };
-      $('.board').addEventListener("click", this.listener);
-    }
-    else {
-      throw (new Error('Could not add .board eventlistener!'));
-    }
+      this.makeMove(selectedCol);
+    };
+    $('.board').addEventListener("click", this.listener);
   }
 
 

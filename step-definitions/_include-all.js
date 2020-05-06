@@ -7,6 +7,8 @@ module.exports = function includeAll() {
   global.$ = (x) => DOM.window.document.querySelector(x);
   global.$$ = (x) => DOM.window.document.querySelectorAll(x);
   global.document = DOM.window.document;
+  global.window = DOM.window;
+  global.prompt = function () { /* Do nothing */ };
   // import the classes (that will add themselves to global)
   require('../www/Game.js');
   require('../www/Board.js');

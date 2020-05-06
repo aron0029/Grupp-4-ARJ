@@ -128,6 +128,7 @@ class Board {
     this.listener = (event) => {
       let clickedDiv = [...$('.board').children].indexOf(event.target.closest('.board > div'));
       let selectedCol = clickedDiv % this.matrix[0].length;
+
       this.makeMove(selectedCol);
     };
     $('.board').addEventListener("click", this.listener);

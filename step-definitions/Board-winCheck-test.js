@@ -75,48 +75,48 @@ module.exports = function () {
 
   this.Then(/^the object should have property "([^"]*)" with value "([^"]*)" as a string\.$/, function (winner, draw) {
     board.matrix = [
-      [2, 1, 2, 1, 2, 2, 1],
-      [2, 1, 2, 1, 2, 2, 1],
-      [2, 1, 2, 1, 2, 2, 1],
-      [1, 2, 1, 2, 1, 2, 2],
-      [1, 2, 1, 2, 1, 2, 2],
-      [1, 2, 1, 2, 1, 2, 2]
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0]
     ];
     winCheck = board.winCheck();
     expect(winCheck.winner).to.deep.equal(draw,
       'winCheck did not return correct winning positions of the combo vertical win'
     );
     board.matrix = [
-      [2, 1, 2, 1, 2, 2, 2],
-      [2, 2, 1, 2, 2, 2, 1],
-      [2, 1, 2, 1, 2, 2, 1],
-      [1, 1, 1, 1, 1, 1, 1],
-      [1, 2, 1, 2, 1, 2, 2],
-      [1, 2, 1, 2, 1, 2, 2]
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 0, 0, 0]
     ];
     winCheck = board.winCheck();
     expect(winCheck.winner).to.deep.equal(draw,
       'winCheck did not return correct winning positions of the combo horizontal win'
     );
     board.matrix = [
-      [2, 1, 2, 1, 2, 2, 1],
-      [2, 2, 2, 1, 2, 2, 1],
-      [2, 1, 2, 1, 2, 2, 1],
-      [1, 2, 1, 2, 1, 1, 2],
-      [1, 2, 1, 2, 1, 2, 2],
-      [1, 2, 1, 2, 1, 2, 2]
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 1, 0, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0]
     ];
     winCheck = board.winCheck();
     expect(winCheck.winner).to.deep.equal(draw,
       'winCheck did not return correct winning positions of the combo diagonal win'
     );
     board.matrix = [
-      [2, 1, 2, 1, 2, 2, 1],
-      [2, 2, 2, 1, 2, 2, 1],
-      [2, 1, 2, 1, 2, 2, 1],
-      [1, 2, 1, 2, 1, 1, 2],
-      [1, 1, 1, 2, 1, 2, 2],
-      [1, 2, 1, 2, 1, 2, 2]
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0]
     ];
     winCheck = board.winCheck();
     expect(winCheck.winner).to.deep.equal(draw,

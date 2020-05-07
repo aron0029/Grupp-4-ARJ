@@ -153,6 +153,7 @@ module.exports = function () {
 
   this.When(/^there are no free positions available in a column for more game pieces$/, async function () {
 
+    // Zeroing
     fakeGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
 
     // Lets actually call makeMove 6 times for each column before testing invalid moves instead of setting board matrix values manually
@@ -186,6 +187,35 @@ module.exports = function () {
     // This step-definition should preseed previous step 
     // But since we already know makeMove sets playInProgress true upon method call we need only check that its false when finished
     expect(fakeGame.board.playInProgress, 'playInProgress should be false on return').to.be.false;
+
+  });
+
+
+  /* ------------------------------------------------------------- */
+  /* ---------- Scenario: A move is already in progress ---------- */
+  /* ------------------------------------------------------------- */
+
+  this.Given(/^board playInProgress property is false upon initial move$/, function () {
+
+    expect(realGame.board.playInProgress, 'playInProgress property should be false unless makeMove is running').to.be.false;
+
+  });
+
+
+  this.Given(/^playInProgress property is set to true during move$/, function () {
+
+    // Zeroing
+    fakeGame.board.matrix = JSON.parse(JSON.stringify(initialMatrix));
+
+    fakeGame.board.makeMove(0);
+    expect(fakeGame.board.playInProgress, 'playInProgress should be true when a move is in progress').to.be.true;
+
+  });
+
+
+  this.Then(/^immediate calls for new moves should return null$/, async function () {
+
+    expect(await fakeGame.board.makeMove(0), 'makeMove is not returning null when playInProgress').to.be.null;
 
   });
 

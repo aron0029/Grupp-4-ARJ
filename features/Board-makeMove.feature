@@ -18,6 +18,11 @@ Feature: Making a move in the game
     Then board makeMove method should return false
     And board playInProgress property should have been set to false when board makeMove has returned false
 
+  Scenario: A move is already in progress
+    Given board playInProgress property is false upon initial move
+    And playInProgress property is set to true during move
+    Then immediate calls for new moves should return null
+
   Scenario: Wrong column argument is passed to board makeMove method when player makes a move
     Given board playInProgress property is initially false upon any move
     When makeMove is passed a column argument that is not of type "number" integer with a value between 0 and 6

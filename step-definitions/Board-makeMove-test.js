@@ -107,8 +107,8 @@ module.exports = function () {
     expect(tellTurnPlayer[tellTurnPlayer.length - 1]).to.not.equal(tellTurnPlayer[tellTurnPlayer.length - 2],
       'currentPlayer property should not equal previous player');
 
-    expect(fakeGame.board.currentPlayer).to.be.a(value).and.equal(tellTurnPlayer[tellTurnPlayer.length - 3],
-      'currentPlayer property should be type number and should equal player prior to previous player');
+    expect(fakeGame.board.currentPlayer).to.equal(tellTurnPlayer[tellTurnPlayer.length - 3],
+      'currentPlayer property should equal player "prior to previous" player');
 
   });
 

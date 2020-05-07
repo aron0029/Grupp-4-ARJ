@@ -8,8 +8,8 @@ class Game {
       this.playerNames = ['Röd', 'Gul'];
     } else {
       this.playerNames = [
-        prompt('Ange namn för spelare 1:'),
-        prompt('Ange namn för spelare 2:')
+        prompt('Ange namn för röd spelare 1:'),
+        prompt('Ange namn för gul spelare 2:')
       ];
     }
 

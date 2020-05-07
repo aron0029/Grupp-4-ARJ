@@ -17,6 +17,49 @@ module.exports = function () {
     addEventListener() { addEventListenerCalled = true; }
   }
 
+  /* ------------------------------------------------------------------------------------ */
+  /* ---------- Scenario: Starting the game by creating a new instance of game ---------- */
+  /* ------------------------------------------------------------------------------------ */
+
+  this.When(/^starting a new Game$/, function () {
+
+    // Test further down
+
+  });
+
+  this.Then(/^a prompt should appear to input two names$/, function () {
+
+    let playerNames = ['Anna', 'Bertil'];
+    global.prompt = () => playerNames.shift();
+    realGame = new Game();
+
+  });
+
+  this.Then(/^save the names in property playerNames$/, function () {
+
+    // Test further down
+
+  });
+
+  this.Then(/^the property should have (\d+) elements$/, function (lengthOfPlayerNames) {
+
+    expect(realGame.playerNames.length).to.equal(+lengthOfPlayerNames,
+      'playerNames should contain two elements'
+    );
+
+  });
+
+  this.Then(/^in each element with a players name$/, function () {
+
+    expect(realGame.playerNames[0]).to.equal('Anna',
+      'first element in playerNames should contain player ones name'
+    );
+
+    expect(realGame.playerNames[1]).to.equal('Bertil',
+      'second element in playerNames should contain player twos name'
+    );
+
+  });
 
   /* ------------------------------------------------------------------------------------ */
   /* ---------- Scenario: Starting the game by creating a new instance of game ---------- */
@@ -26,7 +69,7 @@ module.exports = function () {
 
     fakeGame = new FakeGame();
 
-    expect(startCalled).to.be.true;
+    expect(startCalled, 'method start was not called when creating a new Game').to.be.true;
 
   });
 
@@ -35,14 +78,14 @@ module.exports = function () {
 
     realGame = new Game();
 
-    expect(realGame.board).to.be.instanceof(Board);
+    expect(realGame.board, 'start should set a new instance of Board').to.be.instanceof(Board);
 
   });
 
 
   this.Then(/^game addEventListener method should be called$/, function () {
 
-    expect(addEventListenerCalled).to.be.true;
+    expect(addEventListenerCalled, 'addEventListener was not called when starting a new Game').to.be.true;
 
   });
 
@@ -52,8 +95,8 @@ module.exports = function () {
     // Creating manually since Game start method override in FakeGame
     fakeGame.board = new Board(fakeGame);
 
-    expect(currentPlayer).to.equal(fakeGame.board.currentPlayer);
-    expect(currentPlayer).to.equal(+value);
+    expect(currentPlayer,'currentPlayer should be equal to board.currentPlayer').to.equal(fakeGame.board.currentPlayer);
+    expect(currentPlayer, 'currentPlayer should be 1 when starting a new Game').to.equal(+value);
 
   });
 

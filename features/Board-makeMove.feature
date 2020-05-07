@@ -23,5 +23,12 @@ Feature: Making a move in the game
     When makeMove is passed a column argument that is not of type "number" integer with a value between 0 and 6
     Then makeMove should throw the error "column must be an integer between 0 and 6"
 
-  Scenario: Filling entire board during a game
-# Given...
+  Scenario: Filling entire game board during game
+    Given no player has won the game
+    When every position on game board is filled by game pieces
+    Then all values in board matrix property placed by makeMove should exactly correspond to every move made during game
+
+  Scenario: Filling half of game board during game
+    Given no player has won the game yet
+    When half of the positions on game board are filled by game pieces
+    Then all values in board matrix property placed by makeMove should exactly correspond to every move made in the game thus far

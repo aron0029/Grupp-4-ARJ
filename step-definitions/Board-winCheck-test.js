@@ -84,7 +84,43 @@ module.exports = function () {
     ];
     winCheck = board.winCheck();
     expect(winCheck.winner).to.deep.equal(draw,
-      'winCheck did not return correct winning positions of the combo'
+      'winCheck did not return correct winning positions of the combo vertical win'
+    );
+    board.matrix = [
+      [2, 1, 2, 1, 2, 2, 2],
+      [2, 2, 1, 2, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [1, 1, 1, 1, 1, 1, 1],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2]
+    ];
+    winCheck = board.winCheck();
+    expect(winCheck.winner).to.deep.equal(draw,
+      'winCheck did not return correct winning positions of the combo horizontal win'
+    );
+    board.matrix = [
+      [2, 1, 2, 1, 2, 2, 1],
+      [2, 2, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [1, 2, 1, 2, 1, 1, 2],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2]
+    ];
+    winCheck = board.winCheck();
+    expect(winCheck.winner).to.deep.equal(draw,
+      'winCheck did not return correct winning positions of the combo diagonal win'
+    );
+    board.matrix = [
+      [2, 1, 2, 1, 2, 2, 1],
+      [2, 2, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [1, 2, 1, 2, 1, 1, 2],
+      [1, 1, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2]
+    ];
+    winCheck = board.winCheck();
+    expect(winCheck.winner).to.deep.equal(draw,
+      'winCheck did not return correct winning positions of the combo diagonal win'
     );
   });
 

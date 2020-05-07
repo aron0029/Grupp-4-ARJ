@@ -55,10 +55,68 @@ module.exports = function () {
       'winCheck combo does not return an array with four array'
     );
 
-    board.matrix = [...Array(6)].map(x => Array(7).fill(2));
+    // Check vertical win
+
+    board.matrix = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0]
+    ];
     winCheck = board.winCheck();
-    expect(winCheck.combo).to.deep.equal([[0, 0], [0, 1], [0, 2], [0, 3]],
-      'winCheck did not return correct winning positions of the combo'
+
+    expect(winCheck.combo).to.deep.equal([[2, 0], [3, 0], [4, 0], [5, 0]],
+      'winCheck did not return correct winning positions of the combo for vertical winning'
+    );
+
+    // Check horizontal win
+
+    board.matrix = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 0, 0, 0]
+    ];
+    winCheck = board.winCheck();
+
+    expect(winCheck.combo).to.deep.equal([[5, 0], [5, 1], [5, 2], [5, 3]],
+      'winCheck did not return correct winning positions of the combo for horizontal winning'
+    );
+
+    // Check diagonal win
+
+    board.matrix = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 1, 2, 0, 0, 0],
+      [0, 1, 2, 2, 0, 0, 0],
+      [1, 2, 2, 2, 0, 0, 0]
+    ];
+    winCheck = board.winCheck();
+
+    expect(winCheck.combo).to.deep.equal([[2, 3], [3, 2], [4, 1], [5, 0]],
+      'winCheck did not return correct winning positions of the combo for diagonal winning'
+    );
+
+    // Check diagonal 2 win
+
+    board.matrix = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0],
+      [2, 1, 0, 0, 0, 0, 0],
+      [2, 2, 1, 0, 0, 0, 0],
+      [2, 2, 2, 1, 0, 0, 0]
+    ];
+    winCheck = board.winCheck();
+
+    expect(winCheck.combo).to.deep.equal([[2, 0], [3, 1], [4, 2], [5, 3]],
+      'winCheck did not return correct winning positions of the combo for diagonal winning'
     );
 
   });
@@ -75,52 +133,16 @@ module.exports = function () {
 
   this.Then(/^the object should have property "([^"]*)" with value "([^"]*)" as a string\.$/, function (winner, draw) {
     board.matrix = [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0]
+      [2, 1, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [2, 1, 2, 1, 2, 2, 1],
+      [1, 2, 1, 2, 1, 1, 2],
+      [1, 2, 1, 2, 1, 2, 2],
+      [1, 2, 1, 2, 1, 2, 2]
     ];
     winCheck = board.winCheck();
     expect(winCheck.winner).to.deep.equal(draw,
-      'winCheck did not return correct winning positions of the combo vertical win'
-    );
-    board.matrix = [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [1, 1, 1, 1, 0, 0, 0]
-    ];
-    winCheck = board.winCheck();
-    expect(winCheck.winner).to.deep.equal(draw,
-      'winCheck did not return correct winning positions of the combo horizontal win'
-    );
-    board.matrix = [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0]
-    ];
-    winCheck = board.winCheck();
-    expect(winCheck.winner).to.deep.equal(draw,
-      'winCheck did not return correct winning positions of the combo diagonal win'
-    );
-    board.matrix = [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [1, 0, 0, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0],
-      [0, 0, 0, 1, 0, 0, 0]
-    ];
-    winCheck = board.winCheck();
-    expect(winCheck.winner).to.deep.equal(draw,
-      'winCheck did not return correct winning positions of the combo diagonal win'
+      'winCheck did not return correct winning positions of the combo for draw'
     );
   });
 

@@ -1,7 +1,7 @@
 Feature: Playing the game by clicking on game board
   Creating a new instance of Board we want to add an eventlistener for click events
 
-  # This is testing Board constructor
+  # This is only testing Board constructor
   # Redundant since we now are able to test eventlistener itself. Keeping scenario as is anyway...
   Scenario: addEventListener should be called in Board constructor
     When new Board is created for a new Game
